@@ -13,8 +13,8 @@ VAL_DATA_ROOT=dataset/
 # already been resized using another tool.
 RESIZE=true
 if $RESIZE; then
-  RESIZE_HEIGHT=256
-  RESIZE_WIDTH=256
+  RESIZE_HEIGHT=100
+  RESIZE_WIDTH=100
 else
   RESIZE_HEIGHT=0
   RESIZE_WIDTH=0
@@ -43,7 +43,7 @@ GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --backend="leveldb" \
     ./ \
     train.txt \
-    jabong_train_leveldb
+    jabong_train_leveldb_100
 
 echo "Creating val leveldb..."
 
@@ -54,6 +54,6 @@ GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --backend="leveldb" \
     ./ \
     test.txt \
-    jabong_val_leveldb
+    jabong_val_leveldb_100
 
 echo "Done."
