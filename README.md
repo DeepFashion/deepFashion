@@ -1,3 +1,4 @@
+# This is a modified version of https://github.com/kevinlin311tw/caffe-cvprw15 for deepFashion
 # Caffe-cvprw15 
 
 Deep Learning of Binary Hash Codes for Fast Image Retrieval
