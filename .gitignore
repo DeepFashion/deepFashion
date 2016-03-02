@@ -80,3 +80,14 @@ docs/dev
 
 # CMake generated files
 *.gen.cmake
+
+
+# Database zip file
+*.zip
+
+
+# Database folders
+*/dataset/*
+
+
+examples/deepFashion/dataset/*
