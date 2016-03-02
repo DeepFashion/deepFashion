@@ -1,0 +1,43 @@
+I0302 19:10:16.699553  1609 caffe.cpp:99] Use GPU with device ID 0
+I0302 19:10:17.046896  1609 caffe.cpp:107] Starting Optimization
+I0302 19:10:17.047065  1609 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 500
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 65000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 10000
+snapshot: 10000
+snapshot_prefix: "snapshot/deepFashion_autoencoder"
+solver_mode: GPU
+test_compute_loss: true
+net: "deepFashion_autoencoder.prototxt"
+test_state {
+  stage: "test-on-train"
+}
+test_state {
+  stage: "test-on-test"
+}
+I0302 19:10:17.047107  1609 solver.cpp:67] Creating training net from net file: deepFashion_autoencoder.prototxt
+[libprotobuf ERROR google/protobuf/text_format.cc:245] Error parsing text-format caffe.NetParameter: 2:7: Message type "caffe.NetParameter" has no field named "layer".
+F0302 19:10:17.048699  1609 upgrade_proto.cpp:623] Check failed: ReadProtoFromTextFile(param_file, param) Failed to parse NetParameter file: deepFashion_autoencoder.prototxt
+*** Check failure stack trace: ***
+    @     0x7f39acecbdaa  (unknown)
+    @     0x7f39acecbce4  (unknown)
+    @     0x7f39acecb6e6  (unknown)
+    @     0x7f39acece687  (unknown)
+    @           0x4ac42e  caffe::ReadNetParamsFromTextFileOrDie()
+    @           0x46b652  caffe::Solver<>::InitTrainNet()
+    @           0x46c816  caffe::Solver<>::Init()
+    @           0x46c976  caffe::Solver<>::Solver()
+    @           0x419bc0  caffe::GetSolver<>()
+    @           0x415fd4  train()
+    @           0x4109c1  main
+    @     0x7f39a8de2ec5  (unknown)
+    @           0x414b27  (unknown)
+    @              (nil)  (unknown)

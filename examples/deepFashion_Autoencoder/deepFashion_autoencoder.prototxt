@@ -10,7 +10,7 @@ layer {
     scale: 0.0039215684
   }
   data_param {
-    source: "lmdb/jabong_train_lmdb"
+    source: "lmdb/jabong_train_leveldb_100"
     batch_size: 100
     backend: LMDB
   }
@@ -27,7 +27,7 @@ layer {
     scale: 0.0039215684
   }
   data_param {
-    source: "lmdb/jabong_train_lmdb"
+    source: "lmdb/jabong_train_leveldb_100"
     batch_size: 100
     backend: LMDB
   }
@@ -44,7 +44,7 @@ layer {
     scale: 0.0039215684
   }
   data_param {
-    source: "lmdb/jabong_train_lmdb"
+    source: "jabong_train_leveldb_100"
     batch_size: 100
     backend: LMDB
   }
