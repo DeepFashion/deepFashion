@@ -52,7 +52,7 @@ with open(test_label_file,'r') as f:
         tst_label=f.readlines()
 
 print type(binary_train)
-mapRes, precision_at_k = precision( trn_label, binary_train, tst_label, binary_test, top_k, 1);
+mapRes, precision_at_k = precision( trn_label, binary_train, tst_label, binary_test, top_k, 1)
 # fprintf('MAP = %f\n',map);
 # save(map_file, 'map', '-ascii');
 # P = [[1:1:top_k]' precision_at_k'];
