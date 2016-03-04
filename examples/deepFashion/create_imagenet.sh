@@ -13,8 +13,8 @@ VAL_DATA_ROOT=dataset/
 # already been resized using another tool.
 RESIZE=true
 if $RESIZE; then
-  RESIZE_HEIGHT=100
-  RESIZE_WIDTH=100
+  RESIZE_HEIGHT=50
+  RESIZE_WIDTH=50
 else
   RESIZE_HEIGHT=0
   RESIZE_WIDTH=0
@@ -34,26 +34,26 @@ if [ ! -d "$VAL_DATA_ROOT" ]; then
   exit 1
 fi
 
-echo "Creating train leveldb..."
+echo "Creating train lmdb..."
 
 GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --resize_height=$RESIZE_HEIGHT \
     --resize_width=$RESIZE_WIDTH \
     --shuffle \
-    --backend="leveldb" \
+    --backend="lmdb" \
     ./ \
     train.txt \
-    jabong_train_leveldb_100
+    jabong_train_lmdb_50
 
-echo "Creating val leveldb..."
+echo "Creating val lmdb..."
 
 GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --resize_height=$RESIZE_HEIGHT \
     --resize_width=$RESIZE_WIDTH \
     --shuffle \
-    --backend="leveldb" \
+    --backend="lmdb" \
     ./ \
     test.txt \
-    jabong_val_leveldb_100
+    jabong_val_lmdb_50
 
 echo "Done."

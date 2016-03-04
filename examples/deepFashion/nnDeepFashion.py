@@ -1,6 +1,6 @@
 import os.path
 import scipy.io
-
+import h5py
 use_gpu = 1
 
 # top K returned images
@@ -32,18 +32,20 @@ precision_file = result_folder+'/precision-at-k.txt'
 
 # feature extraction- test set
 if os.path.isfile(binary_test_file)!=0:
-    binary_test = scipy.io.loadmat(binary_test_file)
+    binary_test = h5py.File(binary_test_file)
 else:
     print 'Load model using matlab or write a wrapper for it'
     
  # feature extraction- training set
 if os.path.isfile(binary_train_file)!=0:
-    binary_train = scipy.io.loadmat(binary_train_file)
+    binary_train = h5py.File(binary_train_file)
 else:
     print 'Load model using matlab or write a wrapper for it'
+with open(train_label_file,'r') as f:
+	trn_label=f.readlines()
 
-trn_label = scipy.io.loadmat(train_label_file)
-tst_label = scipy.io.loadmat(test_label_file);
+with open(test_label_file,'r') as f:
+        tst_label=f.readlines()
 
 # [map, precision_at_k] = precision( trn_label, binary_train, tst_label, binary_test, top_k, 1);
 # fprintf('MAP = %f\n',map);
