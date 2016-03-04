@@ -1,24 +1,30 @@
 import numpy as np
+from scipy.spatial import distance
 def precision (trn_label, trn_binary, tst_label, tst_binary, top_k, mode):
     K = top_k;
-    QueryTimes = size(tst_binary,2);
-
+    QueryTimes = tst_binary.shape[0]
+    print QueryTimes
     correct = np.zeros((K,1));
     total = np.zeros((K,1));
     error = np.zeros((K,1));
     AP = np.zeros((QueryTimes,1));
 
     Ns = np.arange(1,K+1)
-    sum_tp = zeros((1, Ns.size))
+    sum_tp = np.zeros((1, Ns.size))
 
     for i in range(QueryTimes):
         query_label = tst_label[i];
-        fprintf('query %d\n',i);
-        query_binary = tst_binary[:,i]
+	print query_label
+        print 'query',i,'\n'
+	print tst_binary.shape
+        query_binary = tst_binary[i,:]
+	
+	print query_binary.shape
+	print tst_binary.shape
         if mode==1:
-            similarity = cdist(trn_binary,query_binary,'hamming')
+            similarity = distance.cdist(trn_binary,query_binary,'hamming')
         elif mode ==2:
-            similarity = cdist(trn_binary,query_binary,'euclidean')
+            similarity = distance.cdist(trn_binary,query_binary,'euclidean')
 
         y2=np.argsort(similarity);
         
