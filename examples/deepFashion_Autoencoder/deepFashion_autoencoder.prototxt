@@ -1,73 +1,67 @@
-name: "DeepFashionAutoencoder"
-layer {
-  name: "data"
-  type: "Data"
+name: "DeepFashion_Autoencoder"
+layers {
   top: "data"
-  include {
-    phase: TRAIN
+  name: "data"
+  type: DATA
+  data_param {
+    source: "lmdb/jabong_train_lmdb_50"
+    backend: LMDB
+    batch_size: 100
   }
   transform_param {
     scale: 0.0039215684
   }
-  data_param {
-    source: "lmdb/jabong_train_leveldb_100"
-    batch_size: 100
-    backend: LMDB
-  }
+  include: { phase: TRAIN }
 }
-layer {
-  name: "data"
-  type: "Data"
+layers {
   top: "data"
-  include {
+  name: "data"
+  type: DATA
+  data_param {
+    source: "lmdb/jabong_train_lmdb_50"
+    backend: LMDB
+    batch_size: 100
+  }
+  transform_param {
+    scale: 0.0039215684
+  }
+  include: {
     phase: TEST
-    stage: "test-on-train"
-  }
-  transform_param {
-    scale: 0.0039215684
-  }
-  data_param {
-    source: "lmdb/jabong_train_leveldb_100"
-    batch_size: 100
-    backend: LMDB
+    stage: 'test-on-train'
   }
 }
-layer {
-  name: "data"
-  type: "Data"
+layers {
   top: "data"
-  include {
-    phase: TEST
-    stage: "test-on-test"
+  name: "data"
+  type: DATA
+  data_param {
+    source: "lmdb/jabong_train_lmdb_50"
+    backend: LMDB
+    batch_size: 100
   }
   transform_param {
     scale: 0.0039215684
   }
-  data_param {
-    source: "jabong_train_leveldb_100"
-    batch_size: 100
-    backend: LMDB
+  include: {
+    phase: TEST
+    stage: 'test-on-test'
   }
 }
-layer {
-  name: "flatdata"
-  type: "Flatten"
+layers {
   bottom: "data"
   top: "flatdata"
+  name: "flatdata"
+  type: FLATTEN
 }
-layer {
-  name: "encode1"
-  type: "InnerProduct"
+layers {
   bottom: "data"
   top: "encode1"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "encode1"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 2000
     weight_filler {
@@ -81,25 +75,21 @@ layer {
     }
   }
 }
-layer {
-  name: "encode1neuron"
-  type: "Sigmoid"
+layers {
   bottom: "encode1"
   top: "encode1neuron"
+  name: "encode1neuron"
+  type: SIGMOID
 }
-layer {
-  name: "encode2"
-  type: "InnerProduct"
+layers {
   bottom: "encode1neuron"
   top: "encode2"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "encode2"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 750
     weight_filler {
@@ -113,25 +103,21 @@ layer {
     }
   }
 }
-layer {
-  name: "encode2neuron"
-  type: "Sigmoid"
+layers {
   bottom: "encode2"
   top: "encode2neuron"
+  name: "encode2neuron"
+  type: SIGMOID
 }
-layer {
-  name: "encode3"
-  type: "InnerProduct"
+layers {
   bottom: "encode2neuron"
   top: "encode3"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "encode3"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 250
     weight_filler {
@@ -145,25 +131,21 @@ layer {
     }
   }
 }
-layer {
-  name: "encode3neuron"
-  type: "Sigmoid"
+layers {
   bottom: "encode3"
   top: "encode3neuron"
+  name: "encode3neuron"
+  type: SIGMOID
 }
-layer {
-  name: "encode4"
-  type: "InnerProduct"
+layers {
   bottom: "encode3neuron"
   top: "encode4"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "encode4"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 50
     weight_filler {
@@ -177,19 +159,15 @@ layer {
     }
   }
 }
-layer {
-  name: "decode4"
-  type: "InnerProduct"
+layers {
   bottom: "encode4"
   top: "decode4"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "decode4"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 250
     weight_filler {
@@ -203,25 +181,21 @@ layer {
     }
   }
 }
-layer {
-  name: "decode4neuron"
-  type: "Sigmoid"
+layers {
   bottom: "decode4"
   top: "decode4neuron"
+  name: "decode4neuron"
+  type: SIGMOID
 }
-layer {
-  name: "decode3"
-  type: "InnerProduct"
+layers {
   bottom: "decode4neuron"
   top: "decode3"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "decode3"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 750
     weight_filler {
@@ -235,25 +209,21 @@ layer {
     }
   }
 }
-layer {
-  name: "decode3neuron"
-  type: "Sigmoid"
+layers {
   bottom: "decode3"
   top: "decode3neuron"
+  name: "decode3neuron"
+  type: SIGMOID
 }
-layer {
-  name: "decode2"
-  type: "InnerProduct"
+layers {
   bottom: "decode3neuron"
   top: "decode2"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "decode2"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
     num_output: 2000
     weight_filler {
@@ -267,27 +237,23 @@ layer {
     }
   }
 }
-layer {
-  name: "decode2neuron"
-  type: "Sigmoid"
+layers {
   bottom: "decode2"
   top: "decode2neuron"
+  name: "decode2neuron"
+  type: SIGMOID
 }
-layer {
-  name: "decode1"
-  type: "InnerProduct"
+layers {
   bottom: "decode2neuron"
   top: "decode1"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
+  name: "decode1"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 1
+  weight_decay: 1
+  weight_decay: 0
   inner_product_param {
-    num_output: 10000
+    num_output: 7500 
     weight_filler {
       type: "gaussian"
       std: 1
@@ -299,25 +265,25 @@ layer {
     }
   }
 }
-layer {
-  name: "loss"
-  type: "SigmoidCrossEntropyLoss"
+layers {
   bottom: "decode1"
   bottom: "flatdata"
   top: "cross_entropy_loss"
+  name: "loss"
+  type: SIGMOID_CROSS_ENTROPY_LOSS
   loss_weight: 1
 }
-layer {
-  name: "decode1neuron"
-  type: "Sigmoid"
+layers {
   bottom: "decode1"
   top: "decode1neuron"
+  name: "decode1neuron"
+  type: SIGMOID
 }
-layer {
-  name: "loss"
-  type: "EuclideanLoss"
+layers {
   bottom: "decode1neuron"
   bottom: "flatdata"
   top: "l2_error"
+  name: "loss"
+  type: EUCLIDEAN_LOSS
   loss_weight: 0
 }
