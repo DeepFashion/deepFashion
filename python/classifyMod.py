@@ -31,13 +31,13 @@ def main(argv):
     parser.add_argument(
         "--model_def",
         default=os.path.join(pycaffe_dir,
-                "../models/bvlc_reference_caffenet/deploy.prototxt"),
+                "/home/ubuntu/caffe-cvprw15/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt"),
         help="Model definition file."
     )
     parser.add_argument(
         "--pretrained_model",
         default=os.path.join(pycaffe_dir,
-                "../models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel"),
+                "/home/ubuntu/caffe-cvprw15/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel"),
         help="Trained model weights file."
     )
     parser.add_argument(
@@ -119,11 +119,12 @@ def main(argv):
 
     # Classify.
     start = time.time()
-    predictions = classifier.predict(inputs, not args.center_only)
+    predictions = classifier.predict(inputs,False)
     print "Done in %.2f s." % (time.time() - start)
     print predictions
-    # Save
-    print not args.center_only
+    print predictions.shape
+
+	# Save
     np.save(args.output_file, predictions)
 
 
