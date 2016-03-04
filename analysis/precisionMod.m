@@ -10,6 +10,7 @@ for i = 1:QueryTimes
     mapping{i,1}={fileTest{i}};
     fprintf('query %d\n',i);
     query_binary = tst_binary(:,i);
+    query_binary
     if mode==1
     tic
     similarity = pdist2(trn_binary',query_binary','hamming');

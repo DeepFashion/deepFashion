@@ -9,20 +9,35 @@ use_gpu = 1;
 top_k = 30;
 feat_len = 48;
 
-% set result folder
-result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis';
+% % set result folder
+% result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis';
 
+% % models
+% model_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel';
+% % model definition
+% model_def_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt';
+
+% % train-test
+% test_file_list = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/test.txt.data';
+% test_label_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/test.txt.labels';
+% train_file_list = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/train.txt.data';
+% train_label_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/train.txt.labels';
+% % --- settings end here ---
+
+% result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis'
+result_folder = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/analysis'
 % models
-model_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel';
+model_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel';
 % model definition
-model_def_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt';
+model_def_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt';
 
 % train-test
-test_file_list = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/test.txt.data';
-test_label_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/test.txt.labels';
-train_file_list = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/train.txt.data';
-train_label_file = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/train.txt.labels';
-% --- settings end here ---
+test_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.data';
+test_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.labels';
+train_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.data';
+train_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.labels';
+% ----------- settings end here --
+
 
 % outputs
 feat_test_file = sprintf('%s/feat-test.mat', result_folder);
