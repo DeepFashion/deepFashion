@@ -90,3 +90,14 @@ class deepFashionFeatures(caffe.Net):
             predictions = predictions.mean(1)
 
         return predictions
+
+
+# # 2.2: Then pass them to the new network and get features via pool5
+# net_fc7.blobs['pool5'].data[...] = feat_p5
+# net_fc7.forward(start='fc6', end='fc7')
+# feat_fc7_new = net_fc7.blobs['fc7'].data
+# feat_fc7_new = np.reshape(feat_fc7_new, (feat_fc7_new.shape[0], -1))
+
+# net.blobs['data'].data[...] = my_image
+# net.forward() # equivalent to net.forward_all()
+# softmax_probabilities = net.blobs['prob'].data
