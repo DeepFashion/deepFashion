@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """
-classify.py is an out-of-the-box image classifer callable from the command line.
-
-By default it configures and runs the Caffe reference ImageNet model.
+By default it configures and runs the Kevin Binary Hash Model on Fashion Dataset.
 """
 import numpy as np
 import os
