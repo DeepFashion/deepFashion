@@ -9,12 +9,18 @@ TOOLS=../../build/tools
 TRAIN_DATA_ROOT=dataset/
 VAL_DATA_ROOT=dataset/
 
+TRAIN_FOLDER_NAME=/data/dataset/jabong_train_leveldb_256_color_label
+TEST_FOLDER_NAME=/data/dataset/jabong_test_leveldb_256_color_label
+
+TRAIN_FILE_NAME=color_label_train.txt
+TEST_FILE_NAME=color_label_test.txt
+
 # Set RESIZE=true to resize the images to 256x256. Leave as false if images have
 # already been resized using another tool.
 RESIZE=true
 if $RESIZE; then
-  RESIZE_HEIGHT=50
-  RESIZE_WIDTH=50
+  RESIZE_HEIGHT=256
+  RESIZE_WIDTH=256
 else
   RESIZE_HEIGHT=0
   RESIZE_WIDTH=0
@@ -40,10 +46,10 @@ GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --resize_height=$RESIZE_HEIGHT \
     --resize_width=$RESIZE_WIDTH \
     --shuffle \
-    --backend="lmdb" \
+    --backend="leveldb" \
     ./ \
-    train.txt \
-    jabong_train_lmdb_50
+    $TRAIN_FILE_NAME \
+    $TRAIN_FOLDER_NAME
 
 echo "Creating val lmdb..."
 
@@ -51,9 +57,9 @@ GLOG_logtostderr=1 $TOOLS/convert_imageset \
     --resize_height=$RESIZE_HEIGHT \
     --resize_width=$RESIZE_WIDTH \
     --shuffle \
-    --backend="lmdb" \
+    --backend="leveldb" \
     ./ \
-    test.txt \
-    jabong_val_lmdb_50
+    $TEST_FILE_NAME \
+    $TEST_FOLDER_NAME
 
 echo "Done."

@@ -3,8 +3,8 @@ layers {
   layer {
     name: "data"
     type: "data"
-    source: "jabong_val_leveldb"
-    meanfile: "../../data/ilsvrc12/imagenet_mean.binaryproto"
+    source: "/data/dataset/jabong_test_leveldb_256_color_label"
+    meanfile: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
     batchsize: 32
     cropsize: 227
     mirror: true
@@ -373,7 +373,7 @@ layers {
     # network doesn't populate this layer with its fc8
     name: "fc8_pascal"
     type: "innerproduct"
-    num_output: 10
+    num_output: 31
     weight_filler {
       type: "gaussian"
       std: 0.01

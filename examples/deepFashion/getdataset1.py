@@ -1,5 +1,5 @@
-FILENAME_TRAIN="train.txt"
-FILENAME_TEST="test.txt"
+FILENAME_TRAIN="color_label_train.txt"
+FILENAME_TEST="color_label_test.txt"
 def main(FILENAME):
 	with open(FILENAME,'r') as f:
 		data=f.readlines()

@@ -11,4 +11,4 @@ max_iter: 50000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 10000
-snapshot_prefix: "deepFashion_Jabong_48"
+snapshot_prefix: "deepFashion_Jabong_48_color_label"
