@@ -56,10 +56,10 @@ def protxtFiles(PROJECT):
 
 
 def main():
-	PROJECT_ROOT="/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion"
+	PROJECT_ROOT="/home/ubuntu/caffe-cvprw15/examples/deepFashion"
 	LOCAL_PROJECT_ROOT="/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion"
-	PROJECT_NAME="test"
-	DBDIR="db/"
+	PROJECT_NAME="Test"
+	DBDIR="/data/deepfashion/"
 
 	if (os.path.isdir(PROJECT_NAME)):
 		print "Project with same name exists"
