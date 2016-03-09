@@ -11,7 +11,7 @@ def findAndReplace(filename,find,replace):
 	res=""
 	for line in contents:
 		line = re.sub(find,replace, line.rstrip())
-		res+=line
+		res+=line+'\n'
 	# saveFilename=".".join(filename.split('.')[:-1])
 	with open(filename,'w+') as f:
 		f.write(res)
@@ -44,7 +44,6 @@ def configureJson(ROOT,PROJECT,DB,settingFileName):
 def protxtFiles(PROJECT):
 	with open(PROJECT+'/SETTINGS.json', 'r') as content_file:
 		settings = json.load(content_file)
-	print settings
 	trainDb=settings["DBNAME_TRAIN"]
 	testDb=settings["DBNAME_TEST"]
 	snapshot=settings["SNAPSHOT_LOC"]
@@ -80,7 +79,7 @@ def main():
 	protxtFiles(PROJECT_NAME)
 
 main()
-
+print "Success"
 
 
 
