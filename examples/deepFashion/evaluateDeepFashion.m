@@ -32,6 +32,19 @@ train_label_file = data.TRAIN_FILE_LABEL;
 
 % % --- settings end here ---
 
+% result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis'
+%result_folder = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/analysis'
+% models
+%model_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel';
+% model definition
+%model_def_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt';
+
+% train-test
+%test_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.data';
+%test_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.labels';
+%train_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.data';
+%train_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.labels';
+% ----------- settings end here ----------------
 
 
 % outputs
@@ -49,6 +62,7 @@ precision_file = sprintf('%s/precision-at-k.txt', result_folder);
 % feature extraction- test set
 if exist(binary_test_file, 'file') ~= 0
     load(binary_test_file);
+    fprintf('loading the parameters');
 else
     [feat_test , list_im_test] = matcaffe_batch_feat(test_file_list, use_gpu, feat_len, model_def_file, model_file);
     save(feat_test_file, 'feat_test', '-v7.3');
