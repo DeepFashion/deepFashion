@@ -1,4 +1,4 @@
-with open(PROJECT+'/SETTINGS.json', 'r') as content_file:
+with open('SETTINGS.json', 'r') as content_file:
 	settings = json.load(content_file)
 FILENAME_TRAIN = settings['TEST_FILE']
 FILENAME_TEST = settings['TRAIN_FILE']
