@@ -2,63 +2,72 @@ import os.path
 import scipy.io
 import h5py
 from precision import *
-use_gpu = 1
+import argparse
 
-# top K returned images
-top_k = 30
-feat_len = 48
-
-# result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis'
-result_folder = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/analysis'
-# models
-model_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel';
-# model definition
-model_def_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt';
-
-# train-test
-test_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.data';
-test_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/test.txt.labels';
-train_file_list = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.data';
-train_label_file = '/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/train.txt.labels';
-# ----------- settings end here ----------------
-
- # outputs
-feat_test_file = result_folder+'/feat-test.mat'
-feat_train_file = result_folder+'/feat-train.mat'
-binary_test_file = result_folder+'/binary-test.mat'
-binary_train_file = result_folder+'/binary-train.mat'
-
-# map and precision outputs
-map_file = result_folder+'/map.txt'
-precision_file = result_folder+'/precision-at-k.txt'
-
-# feature extraction- test set
-if os.path.isfile(binary_test_file)!=0:
-	with h5py.File(binary_test_file, 'r') as f:
-		binary_test = f['binary_test'][()]
-else:
-    print 'Load model using matlab or write a wrapper for it'
-    
- # feature extraction- training set
-if os.path.isfile(binary_train_file)!=0:
-    	with h5py.File(binary_train_file, 'r') as f:
-                binary_train = f['binary_train'][()]
-else:
-    print 'Load model using matlab or write a wrapper for it'
-
-with open(train_label_file,'r') as f:
-	trn_label=f.readlines()
-
-with open(test_label_file,'r') as f:
-        tst_label=f.readlines()
-
-print type(binary_train)
-mapRes, precision_at_k = precision( trn_label, binary_train, tst_label, binary_test, top_k, 1)
-print 'MAP=',mapRes
-# fprintf('MAP = %f\n',map);
-# save(map_file, 'map', '-ascii');
-# P = [[1:1:top_k]' precision_at_k'];
-# save(precision_file, 'P', '-ascii');
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    # Required arguments: input and settings file
+    parser.add_argument(
+        "settings_file",
+        help="Input image, directory, or npy."
+    )
 
 
+def main(settings_file):
+	with open(settings_file, 'r') as content_file:
+		settings = json.load(content_file)
 
+	# top K returned images
+	top_k = settings['TOP_K']
+	feat_len = settings['FEATURE_LEN']
+
+	# result_folder = '/home/ubuntu/caffe-cvprw15/examples/deepFashion/analysis'
+	result_folder = settings['RESULT_FOLDER']
+	# models
+	model_file = settings['MODEL_FILE']
+	# model definition
+	model_def_file = settings['MODEL_DEF_FILE']
+
+	# train-test
+	test_file_list = settings['TEST_FILE_DATA']
+	test_label_file = settings['TEST_FILE_LABEL']
+	train_file_list = settings['TRAIN_FILE_DATA']
+	train_label_file = settings['TRAIN_FILE_LABEL']
+	# ----------- settings end here ----------------
+
+	 # outputs
+	feat_test_file = result_folder+'/feat-test.mat'
+	feat_train_file = result_folder+'/feat-train.mat'
+	binary_test_file = result_folder+'/binary-test.mat'
+	binary_train_file = result_folder+'/binary-train.mat'
+
+	# map and precision outputs
+	map_file = result_folder+'/map.txt'
+	precision_file = result_folder+'/precision-at-k.txt'
+
+	# feature extraction- test set
+	if os.path.isfile(binary_test_file)!=0:
+		with h5py.File(binary_test_file, 'r') as f:
+			binary_test = f['binary_test'][()]
+	else:
+	    print 'Load model using matlab or write a wrapper for it'
+	    
+	 # feature extraction- training set
+	if os.path.isfile(binary_train_file)!=0:
+	    	with h5py.File(binary_train_file, 'r') as f:
+	                binary_train = f['binary_train'][()]
+	else:
+	    print 'Load model using matlab or write a wrapper for it'
+
+	with open(train_label_file,'r') as f:
+		trn_label=f.readlines()
+
+	with open(test_label_file,'r') as f:
+	        tst_label=f.readlines()
+
+	mapRes, precision_at_k = precision( trn_label, binary_train, tst_label, binary_test, top_k, 1)
+	return mapRes,precision_at_k
+
+if __name__ == '__main__':
+	args=parseArgs()
+	mapRes, precision_at_k = main(args.settings_file)
