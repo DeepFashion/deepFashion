@@ -4,4 +4,4 @@
 4) add support for the wrapper python in the setup
 5) create newer networks as planned
 6) check the results with the autoencoder
-
+7) add pycaffe directory to pythonpath
