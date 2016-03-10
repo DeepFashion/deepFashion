@@ -2,6 +2,7 @@
 """
 By default it configures and runs based on SETTING.json file
 """
+import json
 import numpy as np
 import os
 import sys
@@ -9,35 +10,34 @@ import argparse
 import glob
 import time
 
-import caffe
+# import caffe
 
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    def __getattr__(self, attr):
+        return self.get(attr)
+    __setattr__= dict.__setitem__
+    __delattr__= dict.__delitem__
 
-def main(argv):
-    pycaffe_dir = os.path.dirname(__file__)
-
+def parseArgs():
     parser = argparse.ArgumentParser()
-    # Required arguments: input and output files.
+    # Required arguments: input and settings file
     parser.add_argument(
         "input_file",
         help="Input image, directory, or npy."
     )
+
     parser.add_argument(
-        "output_file",
+        "settings_file",
+        help="Settings file for prediction"
+    )
+    # # Optional arguments.
+    parser.add_argument(
+        "--output_file",
+        default='result.npy',
         help="Output npy filename."
     )
-    # Optional arguments.
-    parser.add_argument(
-        "--model_def",
-        default=os.path.join(pycaffe_dir,
-                "/home/ubuntu/caffe-cvprw15/examples/deepFashion/modelDef/deepFashion_48_deploy.prototxt"),
-        help="Model definition file."
-    )
-    parser.add_argument(
-        "--pretrained_model",
-        default=os.path.join(pycaffe_dir,
-                "/home/ubuntu/caffe-cvprw15/examples/deepFashion/models/deepFashion_Jabong_48_iter_50000.caffemodel"),
-        help="Trained model weights file."
-    )
+
     parser.add_argument(
         "--gpu",
         action='store_true',
@@ -56,8 +56,7 @@ def main(argv):
     )
     parser.add_argument(
         "--mean_file",
-        default=os.path.join(pycaffe_dir,
-                             'caffe/imagenet/ilsvrc_2012_mean.npy'),
+        default="/home/ubuntu/caffe-cvprw15/pycaffe/caffe/imagenet/ilsvrc_2012_mean.npy",
         help="Data set image mean of H x W x K dimensions (numpy array). " +
              "Set to '' for no mean subtraction."
     )
@@ -85,14 +84,16 @@ def main(argv):
              "is given as the input file."
     )
     args = parser.parse_args()
-
-
-    with open(PROJECT+'/SETTINGS.json', 'r') as content_file:
+    with open(args.settings_file, 'r') as content_file:
         settings = json.load(content_file)
-    trainDb=settings["DBNAME_TRAIN"]
-    testDb=settings["DBNAME_TEST"]
-    snapshot=settings["SNAPSHOT_LOC"]
 
+    args.model_def=settings['MODEL_DEF_FILE']
+    args.pretrained_model=settings['MODEL_FILE']
+
+    return args
+
+
+def InputImagePredictAux(args):
     image_dims = [int(s) for s in args.images_dim.split(',')]
 
     mean, channel_swap = None, None
@@ -102,7 +103,7 @@ def main(argv):
         channel_swap = [int(s) for s in args.channel_swap.split(',')]
 
     # Make classifier.
-    classifier = caffe.DeepFashionFeatures(args.model_def, args.pretrained_model,
+    classifier = caffe.Classifier(args.model_def, args.pretrained_model,
             image_dims=image_dims, gpu=args.gpu, mean=mean,
             input_scale=args.input_scale, raw_scale=args.raw_scale,
             channel_swap=channel_swap)
@@ -126,12 +127,30 @@ def main(argv):
     start = time.time()
     predictions = classifier.predict(inputs,False)
     print "Done in %.2f s." % (time.time() - start)
-    print predictions
-    print predictions.shape
-
     # Save
     np.save(args.output_file, predictions)
+    #return
+    return predictions
+    
+    
+def InputImagePredict(input_file,settings_file):
+    defaultData={
+    'center_only':False, 'channel_swap':'2,1,0', 'ext':'jpg', 'gpu':False, 
+    'images_dim':'256,256','input_scale':None, 
+    'mean_file':'/home/ubuntu/caffe-cvprw15/pycaffe/caffe/imagenet/ilsvrc_2012_mean.npy', 
+    'output_file':'result.npy', 
+    'raw_scale':255.0
+    } 
+    with open(settings_file, 'r') as content_file:
+        settings = json.load(content_file)
+    defaultData['settings_file']=settings_file
+    defaultData['input_file']=input_file
+    defaultData['model_def']=settings['MODEL_DEF_FILE']
+    defaultData['pretrained_model']=settings['MODEL_FILE']
+
+    return InputImagePredictAux(dotdict(defaultData))
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    # InputImagePredictAux(parseArgs())
+    print InputImagePredict('f1','../hello/SETTINGS.json')
