@@ -1,3 +1,4 @@
+import json
 with open('SETTINGS.json', 'r') as content_file:
 	settings = json.load(content_file)
 FILENAME_TRAIN = settings['TEST_FILE']

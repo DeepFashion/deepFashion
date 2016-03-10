@@ -1,0 +1,1157 @@
+I0310 16:08:11.403118  1808 caffe.cpp:99] Use GPU with device ID 0
+I0310 16:08:11.760687  1808 caffe.cpp:107] Starting Optimization
+I0310 16:08:11.760869  1808 solver.cpp:32] Initializing solver from parameters: 
+train_net: "train_fashion_48.prototxt"
+test_net: "test_fashion_48.prototxt"
+test_iter: 100
+test_interval: 100
+base_lr: 0.001
+display: 20
+max_iter: 500
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 25000
+snapshot: 100
+snapshot_prefix: "/data/deepfashion/color_label_jabong/snapshot/color_label_jabong"
+I0310 16:08:11.760912  1808 solver.cpp:58] Creating training net from train_net file: train_fashion_48.prototxt
+E0310 16:08:11.763942  1808 upgrade_proto.cpp:594] Attempting to upgrade input file specified using deprecated V0LayerParameter: train_fashion_48.prototxt
+E0310 16:08:11.764358  1808 upgrade_proto.cpp:395] Unknown parameter det_fg_threshold for layer type data
+E0310 16:08:11.764384  1808 upgrade_proto.cpp:405] Unknown parameter det_bg_threshold for layer type data
+E0310 16:08:11.764397  1808 upgrade_proto.cpp:415] Unknown parameter det_fg_fraction for layer type data
+E0310 16:08:11.764411  1808 upgrade_proto.cpp:425] Unknown parameter det_context_pad for layer type data
+E0310 16:08:11.764420  1808 upgrade_proto.cpp:435] Unknown parameter det_crop_mode for layer type data
+E0310 16:08:11.764468  1808 upgrade_proto.cpp:598] Warning: had one or more problems upgrading V0NetParameter to NetParameter (see above); continuing anyway.
+E0310 16:08:11.764484  1808 upgrade_proto.cpp:604] Note that future Caffe releases will not support V0NetParameter; use ./build/tools/upgrade_net_proto_text for prototxt and ./build/tools/upgrade_net_proto_binary for model weights upgrade this and any other net protos to the new format.
+I0310 16:08:11.764749  1808 net.cpp:39] Initializing net from parameters: 
+name: "deepFashion"
+layers {
+  top: "data"
+  top: "label"
+  name: "data"
+  type: DATA
+  data_param {
+    source: "/data/deepfashion/color_label_jabong/color_label_jabong_TRAIN"
+    batch_size: 32
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+  }
+}
+layers {
+  bottom: "data"
+  top: "conv1"
+  name: "conv1"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv1"
+  top: "conv1"
+  name: "relu1"
+  type: RELU
+}
+layers {
+  bottom: "conv1"
+  top: "pool1"
+  name: "pool1"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool1"
+  top: "norm1"
+  name: "norm1"
+  type: LRN
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  bottom: "norm1"
+  top: "conv2"
+  name: "conv2"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv2"
+  top: "conv2"
+  name: "relu2"
+  type: RELU
+}
+layers {
+  bottom: "conv2"
+  top: "pool2"
+  name: "pool2"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool2"
+  top: "norm2"
+  name: "norm2"
+  type: LRN
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  bottom: "norm2"
+  top: "conv3"
+  name: "conv3"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv3"
+  top: "conv3"
+  name: "relu3"
+  type: RELU
+}
+layers {
+  bottom: "conv3"
+  top: "conv4"
+  name: "conv4"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv4"
+  top: "conv4"
+  name: "relu4"
+  type: RELU
+}
+layers {
+  bottom: "conv4"
+  top: "conv5"
+  name: "conv5"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv5"
+  top: "conv5"
+  name: "relu5"
+  type: RELU
+}
+layers {
+  bottom: "conv5"
+  top: "pool5"
+  name: "pool5"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool5"
+  top: "fc6"
+  name: "fc6"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc6"
+  top: "fc6"
+  name: "relu6"
+  type: RELU
+}
+layers {
+  bottom: "fc6"
+  top: "fc6"
+  name: "drop6"
+  type: DROPOUT
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  bottom: "fc6"
+  top: "fc7"
+  name: "fc7"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc7"
+  top: "fc7"
+  name: "relu7"
+  type: RELU
+}
+layers {
+  bottom: "fc7"
+  top: "fc7"
+  name: "drop7"
+  type: DROPOUT
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  bottom: "fc7"
+  top: "fc8_kevin"
+  name: "fc8_kevin"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 48
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc8_kevin"
+  top: "fc8_kevin_encode"
+  name: "fc8_kevin_encode"
+  type: SIGMOID
+}
+layers {
+  bottom: "fc8_kevin_encode"
+  top: "fc8_pascal"
+  name: "fc8_pascal"
+  type: INNER_PRODUCT
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 31
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "fc8_pascal"
+  bottom: "label"
+  name: "loss"
+  type: SOFTMAX_LOSS
+}
+state {
+  phase: TRAIN
+}
+I0310 16:08:11.767441  1808 net.cpp:67] Creating Layer data
+I0310 16:08:11.767469  1808 net.cpp:356] data -> data
+I0310 16:08:11.767491  1808 net.cpp:356] data -> label
+I0310 16:08:11.767529  1808 net.cpp:96] Setting up data
+I0310 16:08:11.769073  1808 data_layer.cpp:45] Opening leveldb /data/deepfashion/color_label_jabong/color_label_jabong_TRAIN
+I0310 16:08:17.178645  1808 data_layer.cpp:128] output data size: 32,3,227,227
+I0310 16:08:17.178679  1808 base_data_layer.cpp:36] Loading mean file from../../../data/ilsvrc12/imagenet_mean.binaryproto
+I0310 16:08:17.192898  1808 net.cpp:103] Top shape: 32 3 227 227 (4946784)
+I0310 16:08:17.192939  1808 net.cpp:103] Top shape: 32 1 1 1 (32)
+I0310 16:08:17.192983  1808 net.cpp:67] Creating Layer conv1
+I0310 16:08:17.192991  1808 net.cpp:394] conv1 <- data
+I0310 16:08:17.193008  1808 net.cpp:356] conv1 -> conv1
+I0310 16:08:17.193025  1808 net.cpp:96] Setting up conv1
+I0310 16:08:17.329037  1808 net.cpp:103] Top shape: 32 96 55 55 (9292800)
+I0310 16:08:17.329115  1808 net.cpp:67] Creating Layer relu1
+I0310 16:08:17.329130  1808 net.cpp:394] relu1 <- conv1
+I0310 16:08:17.329144  1808 net.cpp:345] relu1 -> conv1 (in-place)
+I0310 16:08:17.329160  1808 net.cpp:96] Setting up relu1
+I0310 16:08:17.329185  1808 net.cpp:103] Top shape: 32 96 55 55 (9292800)
+I0310 16:08:17.329196  1808 net.cpp:67] Creating Layer pool1
+I0310 16:08:17.329231  1808 net.cpp:394] pool1 <- conv1
+I0310 16:08:17.329241  1808 net.cpp:356] pool1 -> pool1
+I0310 16:08:17.329255  1808 net.cpp:96] Setting up pool1
+I0310 16:08:17.329293  1808 net.cpp:103] Top shape: 32 96 27 27 (2239488)
+I0310 16:08:17.329313  1808 net.cpp:67] Creating Layer norm1
+I0310 16:08:17.329319  1808 net.cpp:394] norm1 <- pool1
+I0310 16:08:17.329325  1808 net.cpp:356] norm1 -> norm1
+I0310 16:08:17.329336  1808 net.cpp:96] Setting up norm1
+I0310 16:08:17.329367  1808 net.cpp:103] Top shape: 32 96 27 27 (2239488)
+I0310 16:08:17.329386  1808 net.cpp:67] Creating Layer conv2
+I0310 16:08:17.329391  1808 net.cpp:394] conv2 <- norm1
+I0310 16:08:17.329399  1808 net.cpp:356] conv2 -> conv2
+I0310 16:08:17.329407  1808 net.cpp:96] Setting up conv2
+I0310 16:08:17.339539  1808 net.cpp:103] Top shape: 32 256 27 27 (5971968)
+I0310 16:08:17.339596  1808 net.cpp:67] Creating Layer relu2
+I0310 16:08:17.339602  1808 net.cpp:394] relu2 <- conv2
+I0310 16:08:17.339612  1808 net.cpp:345] relu2 -> conv2 (in-place)
+I0310 16:08:17.339620  1808 net.cpp:96] Setting up relu2
+I0310 16:08:17.339628  1808 net.cpp:103] Top shape: 32 256 27 27 (5971968)
+I0310 16:08:17.339637  1808 net.cpp:67] Creating Layer pool2
+I0310 16:08:17.339642  1808 net.cpp:394] pool2 <- conv2
+I0310 16:08:17.339648  1808 net.cpp:356] pool2 -> pool2
+I0310 16:08:17.339656  1808 net.cpp:96] Setting up pool2
+I0310 16:08:17.339665  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:17.339681  1808 net.cpp:67] Creating Layer norm2
+I0310 16:08:17.339687  1808 net.cpp:394] norm2 <- pool2
+I0310 16:08:17.339695  1808 net.cpp:356] norm2 -> norm2
+I0310 16:08:17.339702  1808 net.cpp:96] Setting up norm2
+I0310 16:08:17.339707  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:17.339717  1808 net.cpp:67] Creating Layer conv3
+I0310 16:08:17.339721  1808 net.cpp:394] conv3 <- norm2
+I0310 16:08:17.339730  1808 net.cpp:356] conv3 -> conv3
+I0310 16:08:17.339736  1808 net.cpp:96] Setting up conv3
+I0310 16:08:17.369797  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:17.369859  1808 net.cpp:67] Creating Layer relu3
+I0310 16:08:17.369868  1808 net.cpp:394] relu3 <- conv3
+I0310 16:08:17.369877  1808 net.cpp:345] relu3 -> conv3 (in-place)
+I0310 16:08:17.369887  1808 net.cpp:96] Setting up relu3
+I0310 16:08:17.369900  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:17.369918  1808 net.cpp:67] Creating Layer conv4
+I0310 16:08:17.369931  1808 net.cpp:394] conv4 <- conv3
+I0310 16:08:17.369969  1808 net.cpp:356] conv4 -> conv4
+I0310 16:08:17.369979  1808 net.cpp:96] Setting up conv4
+I0310 16:08:17.391703  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:17.391752  1808 net.cpp:67] Creating Layer relu4
+I0310 16:08:17.391759  1808 net.cpp:394] relu4 <- conv4
+I0310 16:08:17.391769  1808 net.cpp:345] relu4 -> conv4 (in-place)
+I0310 16:08:17.391777  1808 net.cpp:96] Setting up relu4
+I0310 16:08:17.391785  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:17.391795  1808 net.cpp:67] Creating Layer conv5
+I0310 16:08:17.391799  1808 net.cpp:394] conv5 <- conv4
+I0310 16:08:17.391806  1808 net.cpp:356] conv5 -> conv5
+I0310 16:08:17.391813  1808 net.cpp:96] Setting up conv5
+I0310 16:08:17.406121  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:17.406178  1808 net.cpp:67] Creating Layer relu5
+I0310 16:08:17.406186  1808 net.cpp:394] relu5 <- conv5
+I0310 16:08:17.406195  1808 net.cpp:345] relu5 -> conv5 (in-place)
+I0310 16:08:17.406203  1808 net.cpp:96] Setting up relu5
+I0310 16:08:17.406211  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:17.406219  1808 net.cpp:67] Creating Layer pool5
+I0310 16:08:17.406224  1808 net.cpp:394] pool5 <- conv5
+I0310 16:08:17.406231  1808 net.cpp:356] pool5 -> pool5
+I0310 16:08:17.406239  1808 net.cpp:96] Setting up pool5
+I0310 16:08:17.406250  1808 net.cpp:103] Top shape: 32 256 6 6 (294912)
+I0310 16:08:17.406270  1808 net.cpp:67] Creating Layer fc6
+I0310 16:08:17.406275  1808 net.cpp:394] fc6 <- pool5
+I0310 16:08:17.406307  1808 net.cpp:356] fc6 -> fc6
+I0310 16:08:17.406316  1808 net.cpp:96] Setting up fc6
+I0310 16:08:18.617564  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:18.617633  1808 net.cpp:67] Creating Layer relu6
+I0310 16:08:18.617645  1808 net.cpp:394] relu6 <- fc6
+I0310 16:08:18.617657  1808 net.cpp:345] relu6 -> fc6 (in-place)
+I0310 16:08:18.617668  1808 net.cpp:96] Setting up relu6
+I0310 16:08:18.617692  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:18.617707  1808 net.cpp:67] Creating Layer drop6
+I0310 16:08:18.617713  1808 net.cpp:394] drop6 <- fc6
+I0310 16:08:18.617720  1808 net.cpp:345] drop6 -> fc6 (in-place)
+I0310 16:08:18.617727  1808 net.cpp:96] Setting up drop6
+I0310 16:08:18.617740  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:18.617754  1808 net.cpp:67] Creating Layer fc7
+I0310 16:08:18.617758  1808 net.cpp:394] fc7 <- fc6
+I0310 16:08:18.617765  1808 net.cpp:356] fc7 -> fc7
+I0310 16:08:18.617774  1808 net.cpp:96] Setting up fc7
+I0310 16:08:19.161146  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:19.161209  1808 net.cpp:67] Creating Layer relu7
+I0310 16:08:19.161218  1808 net.cpp:394] relu7 <- fc7
+I0310 16:08:19.161237  1808 net.cpp:345] relu7 -> fc7 (in-place)
+I0310 16:08:19.161247  1808 net.cpp:96] Setting up relu7
+I0310 16:08:19.161269  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:19.161278  1808 net.cpp:67] Creating Layer drop7
+I0310 16:08:19.161283  1808 net.cpp:394] drop7 <- fc7
+I0310 16:08:19.161289  1808 net.cpp:345] drop7 -> fc7 (in-place)
+I0310 16:08:19.161304  1808 net.cpp:96] Setting up drop7
+I0310 16:08:19.161311  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:19.161319  1808 net.cpp:67] Creating Layer fc8_kevin
+I0310 16:08:19.161324  1808 net.cpp:394] fc8_kevin <- fc7
+I0310 16:08:19.161331  1808 net.cpp:356] fc8_kevin -> fc8_kevin
+I0310 16:08:19.161340  1808 net.cpp:96] Setting up fc8_kevin
+I0310 16:08:19.167649  1808 net.cpp:103] Top shape: 32 48 1 1 (1536)
+I0310 16:08:19.167671  1808 net.cpp:67] Creating Layer fc8_kevin_encode
+I0310 16:08:19.167676  1808 net.cpp:394] fc8_kevin_encode <- fc8_kevin
+I0310 16:08:19.167683  1808 net.cpp:356] fc8_kevin_encode -> fc8_kevin_encode
+I0310 16:08:19.167698  1808 net.cpp:96] Setting up fc8_kevin_encode
+I0310 16:08:19.167713  1808 net.cpp:103] Top shape: 32 48 1 1 (1536)
+I0310 16:08:19.167723  1808 net.cpp:67] Creating Layer fc8_pascal
+I0310 16:08:19.167728  1808 net.cpp:394] fc8_pascal <- fc8_kevin_encode
+I0310 16:08:19.167737  1808 net.cpp:356] fc8_pascal -> fc8_pascal
+I0310 16:08:19.167747  1808 net.cpp:96] Setting up fc8_pascal
+I0310 16:08:19.167809  1808 net.cpp:103] Top shape: 32 31 1 1 (992)
+I0310 16:08:19.167831  1808 net.cpp:67] Creating Layer loss
+I0310 16:08:19.167836  1808 net.cpp:394] loss <- fc8_pascal
+I0310 16:08:19.167841  1808 net.cpp:394] loss <- label
+I0310 16:08:19.167848  1808 net.cpp:356] loss -> (automatic)
+I0310 16:08:19.167853  1808 net.cpp:96] Setting up loss
+I0310 16:08:19.167868  1808 net.cpp:103] Top shape: 1 1 1 1 (1)
+I0310 16:08:19.167875  1808 net.cpp:109]     with loss weight 1
+I0310 16:08:19.167924  1808 net.cpp:170] loss needs backward computation.
+I0310 16:08:19.167930  1808 net.cpp:170] fc8_pascal needs backward computation.
+I0310 16:08:19.167934  1808 net.cpp:170] fc8_kevin_encode needs backward computation.
+I0310 16:08:19.167939  1808 net.cpp:170] fc8_kevin needs backward computation.
+I0310 16:08:19.167943  1808 net.cpp:170] drop7 needs backward computation.
+I0310 16:08:19.167948  1808 net.cpp:170] relu7 needs backward computation.
+I0310 16:08:19.167958  1808 net.cpp:170] fc7 needs backward computation.
+I0310 16:08:19.167963  1808 net.cpp:170] drop6 needs backward computation.
+I0310 16:08:19.167966  1808 net.cpp:170] relu6 needs backward computation.
+I0310 16:08:19.167970  1808 net.cpp:170] fc6 needs backward computation.
+I0310 16:08:19.167975  1808 net.cpp:170] pool5 needs backward computation.
+I0310 16:08:19.167979  1808 net.cpp:170] relu5 needs backward computation.
+I0310 16:08:19.167984  1808 net.cpp:170] conv5 needs backward computation.
+I0310 16:08:19.168026  1808 net.cpp:170] relu4 needs backward computation.
+I0310 16:08:19.168031  1808 net.cpp:170] conv4 needs backward computation.
+I0310 16:08:19.168036  1808 net.cpp:170] relu3 needs backward computation.
+I0310 16:08:19.168040  1808 net.cpp:170] conv3 needs backward computation.
+I0310 16:08:19.168045  1808 net.cpp:170] norm2 needs backward computation.
+I0310 16:08:19.168048  1808 net.cpp:170] pool2 needs backward computation.
+I0310 16:08:19.168052  1808 net.cpp:170] relu2 needs backward computation.
+I0310 16:08:19.168056  1808 net.cpp:170] conv2 needs backward computation.
+I0310 16:08:19.168061  1808 net.cpp:170] norm1 needs backward computation.
+I0310 16:08:19.168066  1808 net.cpp:170] pool1 needs backward computation.
+I0310 16:08:19.168069  1808 net.cpp:170] relu1 needs backward computation.
+I0310 16:08:19.168082  1808 net.cpp:170] conv1 needs backward computation.
+I0310 16:08:19.168087  1808 net.cpp:172] data does not need backward computation.
+I0310 16:08:19.168100  1808 net.cpp:467] Collecting Learning Rate and Weight Decay.
+I0310 16:08:19.168117  1808 net.cpp:219] Network initialization done.
+I0310 16:08:19.168122  1808 net.cpp:220] Memory required for data: 219540868
+E0310 16:08:19.168795  1808 upgrade_proto.cpp:594] Attempting to upgrade input file specified using deprecated V0LayerParameter: test_fashion_48.prototxt
+E0310 16:08:19.169013  1808 upgrade_proto.cpp:395] Unknown parameter det_fg_threshold for layer type data
+E0310 16:08:19.169036  1808 upgrade_proto.cpp:405] Unknown parameter det_bg_threshold for layer type data
+E0310 16:08:19.169046  1808 upgrade_proto.cpp:415] Unknown parameter det_fg_fraction for layer type data
+E0310 16:08:19.169062  1808 upgrade_proto.cpp:425] Unknown parameter det_context_pad for layer type data
+E0310 16:08:19.169075  1808 upgrade_proto.cpp:435] Unknown parameter det_crop_mode for layer type data
+E0310 16:08:19.169127  1808 upgrade_proto.cpp:598] Warning: had one or more problems upgrading V0NetParameter to NetParameter (see above); continuing anyway.
+E0310 16:08:19.169145  1808 upgrade_proto.cpp:604] Note that future Caffe releases will not support V0NetParameter; use ./build/tools/upgrade_net_proto_text for prototxt and ./build/tools/upgrade_net_proto_binary for model weights upgrade this and any other net protos to the new format.
+I0310 16:08:19.169179  1808 solver.cpp:151] Creating test net (#0) specified by test_net file: test_fashion_48.prototxt
+I0310 16:08:19.169441  1808 net.cpp:39] Initializing net from parameters: 
+name: "deepFashion"
+layers {
+  top: "data"
+  top: "label"
+  name: "data"
+  type: DATA
+  data_param {
+    source: "/data/deepfashion/color_label_jabong/color_label_jabong_test"
+    batch_size: 32
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+  }
+}
+layers {
+  bottom: "data"
+  top: "conv1"
+  name: "conv1"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv1"
+  top: "conv1"
+  name: "relu1"
+  type: RELU
+}
+layers {
+  bottom: "conv1"
+  top: "pool1"
+  name: "pool1"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool1"
+  top: "norm1"
+  name: "norm1"
+  type: LRN
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  bottom: "norm1"
+  top: "conv2"
+  name: "conv2"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv2"
+  top: "conv2"
+  name: "relu2"
+  type: RELU
+}
+layers {
+  bottom: "conv2"
+  top: "pool2"
+  name: "pool2"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool2"
+  top: "norm2"
+  name: "norm2"
+  type: LRN
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  bottom: "norm2"
+  top: "conv3"
+  name: "conv3"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv3"
+  top: "conv3"
+  name: "relu3"
+  type: RELU
+}
+layers {
+  bottom: "conv3"
+  top: "conv4"
+  name: "conv4"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv4"
+  top: "conv4"
+  name: "relu4"
+  type: RELU
+}
+layers {
+  bottom: "conv4"
+  top: "conv5"
+  name: "conv5"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "conv5"
+  top: "conv5"
+  name: "relu5"
+  type: RELU
+}
+layers {
+  bottom: "conv5"
+  top: "pool5"
+  name: "pool5"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool5"
+  top: "fc6"
+  name: "fc6"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc6"
+  top: "fc6"
+  name: "relu6"
+  type: RELU
+}
+layers {
+  bottom: "fc6"
+  top: "fc6"
+  name: "drop6"
+  type: DROPOUT
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  bottom: "fc6"
+  top: "fc7"
+  name: "fc7"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc7"
+  top: "fc7"
+  name: "relu7"
+  type: RELU
+}
+layers {
+  bottom: "fc7"
+  top: "fc7"
+  name: "drop7"
+  type: DROPOUT
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  bottom: "fc7"
+  top: "fc8_kevin"
+  name: "fc8_kevin"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 48
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  bottom: "fc8_kevin"
+  top: "fc8_kevin_encode"
+  name: "fc8_kevin_encode"
+  type: SIGMOID
+}
+layers {
+  bottom: "fc8_kevin_encode"
+  top: "fc8_pascal"
+  name: "fc8_pascal"
+  type: INNER_PRODUCT
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 31
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "fc8_pascal"
+  top: "prob"
+  name: "prob"
+  type: SOFTMAX
+}
+layers {
+  bottom: "prob"
+  bottom: "label"
+  top: "accuracy"
+  name: "accuracy"
+  type: ACCURACY
+}
+state {
+  phase: TEST
+}
+I0310 16:08:19.169546  1808 net.cpp:67] Creating Layer data
+I0310 16:08:19.169554  1808 net.cpp:356] data -> data
+I0310 16:08:19.169562  1808 net.cpp:356] data -> label
+I0310 16:08:19.169569  1808 net.cpp:96] Setting up data
+I0310 16:08:19.169575  1808 data_layer.cpp:45] Opening leveldb /data/deepfashion/color_label_jabong/color_label_jabong_test
+I0310 16:08:24.829730  1808 data_layer.cpp:128] output data size: 32,3,227,227
+I0310 16:08:24.829769  1808 base_data_layer.cpp:36] Loading mean file from../../../data/ilsvrc12/imagenet_mean.binaryproto
+I0310 16:08:24.834708  1808 net.cpp:103] Top shape: 32 3 227 227 (4946784)
+I0310 16:08:24.834741  1808 net.cpp:103] Top shape: 32 1 1 1 (32)
+I0310 16:08:24.834769  1808 net.cpp:67] Creating Layer conv1
+I0310 16:08:24.834775  1808 net.cpp:394] conv1 <- data
+I0310 16:08:24.834787  1808 net.cpp:356] conv1 -> conv1
+I0310 16:08:24.834801  1808 net.cpp:96] Setting up conv1
+I0310 16:08:24.836097  1808 net.cpp:103] Top shape: 32 96 55 55 (9292800)
+I0310 16:08:24.836130  1808 net.cpp:67] Creating Layer relu1
+I0310 16:08:24.836136  1808 net.cpp:394] relu1 <- conv1
+I0310 16:08:24.836143  1808 net.cpp:345] relu1 -> conv1 (in-place)
+I0310 16:08:24.836149  1808 net.cpp:96] Setting up relu1
+I0310 16:08:24.836158  1808 net.cpp:103] Top shape: 32 96 55 55 (9292800)
+I0310 16:08:24.836166  1808 net.cpp:67] Creating Layer pool1
+I0310 16:08:24.836174  1808 net.cpp:394] pool1 <- conv1
+I0310 16:08:24.836181  1808 net.cpp:356] pool1 -> pool1
+I0310 16:08:24.836189  1808 net.cpp:96] Setting up pool1
+I0310 16:08:24.836199  1808 net.cpp:103] Top shape: 32 96 27 27 (2239488)
+I0310 16:08:24.836211  1808 net.cpp:67] Creating Layer norm1
+I0310 16:08:24.836215  1808 net.cpp:394] norm1 <- pool1
+I0310 16:08:24.836221  1808 net.cpp:356] norm1 -> norm1
+I0310 16:08:24.836228  1808 net.cpp:96] Setting up norm1
+I0310 16:08:24.836236  1808 net.cpp:103] Top shape: 32 96 27 27 (2239488)
+I0310 16:08:24.836244  1808 net.cpp:67] Creating Layer conv2
+I0310 16:08:24.836249  1808 net.cpp:394] conv2 <- norm1
+I0310 16:08:24.836256  1808 net.cpp:356] conv2 -> conv2
+I0310 16:08:24.836262  1808 net.cpp:96] Setting up conv2
+I0310 16:08:24.848165  1808 net.cpp:103] Top shape: 32 256 27 27 (5971968)
+I0310 16:08:24.848223  1808 net.cpp:67] Creating Layer relu2
+I0310 16:08:24.848232  1808 net.cpp:394] relu2 <- conv2
+I0310 16:08:24.848242  1808 net.cpp:345] relu2 -> conv2 (in-place)
+I0310 16:08:24.848249  1808 net.cpp:96] Setting up relu2
+I0310 16:08:24.848258  1808 net.cpp:103] Top shape: 32 256 27 27 (5971968)
+I0310 16:08:24.848268  1808 net.cpp:67] Creating Layer pool2
+I0310 16:08:24.848273  1808 net.cpp:394] pool2 <- conv2
+I0310 16:08:24.848278  1808 net.cpp:356] pool2 -> pool2
+I0310 16:08:24.848285  1808 net.cpp:96] Setting up pool2
+I0310 16:08:24.848296  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:24.848309  1808 net.cpp:67] Creating Layer norm2
+I0310 16:08:24.848330  1808 net.cpp:394] norm2 <- pool2
+I0310 16:08:24.848338  1808 net.cpp:356] norm2 -> norm2
+I0310 16:08:24.848345  1808 net.cpp:96] Setting up norm2
+I0310 16:08:24.848351  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:24.848361  1808 net.cpp:67] Creating Layer conv3
+I0310 16:08:24.848368  1808 net.cpp:394] conv3 <- norm2
+I0310 16:08:24.848376  1808 net.cpp:356] conv3 -> conv3
+I0310 16:08:24.848383  1808 net.cpp:96] Setting up conv3
+I0310 16:08:24.877483  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:24.877540  1808 net.cpp:67] Creating Layer relu3
+I0310 16:08:24.877548  1808 net.cpp:394] relu3 <- conv3
+I0310 16:08:24.877557  1808 net.cpp:345] relu3 -> conv3 (in-place)
+I0310 16:08:24.877567  1808 net.cpp:96] Setting up relu3
+I0310 16:08:24.877574  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:24.877584  1808 net.cpp:67] Creating Layer conv4
+I0310 16:08:24.877589  1808 net.cpp:394] conv4 <- conv3
+I0310 16:08:24.877598  1808 net.cpp:356] conv4 -> conv4
+I0310 16:08:24.877605  1808 net.cpp:96] Setting up conv4
+I0310 16:08:24.899005  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:24.899047  1808 net.cpp:67] Creating Layer relu4
+I0310 16:08:24.899054  1808 net.cpp:394] relu4 <- conv4
+I0310 16:08:24.899065  1808 net.cpp:345] relu4 -> conv4 (in-place)
+I0310 16:08:24.899073  1808 net.cpp:96] Setting up relu4
+I0310 16:08:24.899080  1808 net.cpp:103] Top shape: 32 384 13 13 (2076672)
+I0310 16:08:24.899090  1808 net.cpp:67] Creating Layer conv5
+I0310 16:08:24.899093  1808 net.cpp:394] conv5 <- conv4
+I0310 16:08:24.899099  1808 net.cpp:356] conv5 -> conv5
+I0310 16:08:24.899139  1808 net.cpp:96] Setting up conv5
+I0310 16:08:24.913606  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:24.913666  1808 net.cpp:67] Creating Layer relu5
+I0310 16:08:24.913676  1808 net.cpp:394] relu5 <- conv5
+I0310 16:08:24.913684  1808 net.cpp:345] relu5 -> conv5 (in-place)
+I0310 16:08:24.913694  1808 net.cpp:96] Setting up relu5
+I0310 16:08:24.913702  1808 net.cpp:103] Top shape: 32 256 13 13 (1384448)
+I0310 16:08:24.913710  1808 net.cpp:67] Creating Layer pool5
+I0310 16:08:24.913714  1808 net.cpp:394] pool5 <- conv5
+I0310 16:08:24.913722  1808 net.cpp:356] pool5 -> pool5
+I0310 16:08:24.913728  1808 net.cpp:96] Setting up pool5
+I0310 16:08:24.913738  1808 net.cpp:103] Top shape: 32 256 6 6 (294912)
+I0310 16:08:24.913751  1808 net.cpp:67] Creating Layer fc6
+I0310 16:08:24.913759  1808 net.cpp:394] fc6 <- pool5
+I0310 16:08:24.913768  1808 net.cpp:356] fc6 -> fc6
+I0310 16:08:24.913775  1808 net.cpp:96] Setting up fc6
+I0310 16:08:26.159898  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.159966  1808 net.cpp:67] Creating Layer relu6
+I0310 16:08:26.159975  1808 net.cpp:394] relu6 <- fc6
+I0310 16:08:26.159986  1808 net.cpp:345] relu6 -> fc6 (in-place)
+I0310 16:08:26.159996  1808 net.cpp:96] Setting up relu6
+I0310 16:08:26.160030  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.160038  1808 net.cpp:67] Creating Layer drop6
+I0310 16:08:26.160043  1808 net.cpp:394] drop6 <- fc6
+I0310 16:08:26.160050  1808 net.cpp:345] drop6 -> fc6 (in-place)
+I0310 16:08:26.160058  1808 net.cpp:96] Setting up drop6
+I0310 16:08:26.160063  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.160073  1808 net.cpp:67] Creating Layer fc7
+I0310 16:08:26.160076  1808 net.cpp:394] fc7 <- fc6
+I0310 16:08:26.160084  1808 net.cpp:356] fc7 -> fc7
+I0310 16:08:26.160092  1808 net.cpp:96] Setting up fc7
+I0310 16:08:26.704756  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.704828  1808 net.cpp:67] Creating Layer relu7
+I0310 16:08:26.704838  1808 net.cpp:394] relu7 <- fc7
+I0310 16:08:26.704849  1808 net.cpp:345] relu7 -> fc7 (in-place)
+I0310 16:08:26.704859  1808 net.cpp:96] Setting up relu7
+I0310 16:08:26.704882  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.704891  1808 net.cpp:67] Creating Layer drop7
+I0310 16:08:26.704896  1808 net.cpp:394] drop7 <- fc7
+I0310 16:08:26.704901  1808 net.cpp:345] drop7 -> fc7 (in-place)
+I0310 16:08:26.704908  1808 net.cpp:96] Setting up drop7
+I0310 16:08:26.704913  1808 net.cpp:103] Top shape: 32 4096 1 1 (131072)
+I0310 16:08:26.704922  1808 net.cpp:67] Creating Layer fc8_kevin
+I0310 16:08:26.704926  1808 net.cpp:394] fc8_kevin <- fc7
+I0310 16:08:26.704933  1808 net.cpp:356] fc8_kevin -> fc8_kevin
+I0310 16:08:26.704941  1808 net.cpp:96] Setting up fc8_kevin
+I0310 16:08:26.711284  1808 net.cpp:103] Top shape: 32 48 1 1 (1536)
+I0310 16:08:26.711313  1808 net.cpp:67] Creating Layer fc8_kevin_encode
+I0310 16:08:26.711319  1808 net.cpp:394] fc8_kevin_encode <- fc8_kevin
+I0310 16:08:26.711326  1808 net.cpp:356] fc8_kevin_encode -> fc8_kevin_encode
+I0310 16:08:26.711333  1808 net.cpp:96] Setting up fc8_kevin_encode
+I0310 16:08:26.711345  1808 net.cpp:103] Top shape: 32 48 1 1 (1536)
+I0310 16:08:26.711355  1808 net.cpp:67] Creating Layer fc8_pascal
+I0310 16:08:26.711360  1808 net.cpp:394] fc8_pascal <- fc8_kevin_encode
+I0310 16:08:26.711367  1808 net.cpp:356] fc8_pascal -> fc8_pascal
+I0310 16:08:26.711377  1808 net.cpp:96] Setting up fc8_pascal
+I0310 16:08:26.711439  1808 net.cpp:103] Top shape: 32 31 1 1 (992)
+I0310 16:08:26.711462  1808 net.cpp:67] Creating Layer prob
+I0310 16:08:26.711467  1808 net.cpp:394] prob <- fc8_pascal
+I0310 16:08:26.711473  1808 net.cpp:356] prob -> prob
+I0310 16:08:26.711479  1808 net.cpp:96] Setting up prob
+I0310 16:08:26.711496  1808 net.cpp:103] Top shape: 32 31 1 1 (992)
+I0310 16:08:26.711527  1808 net.cpp:67] Creating Layer accuracy
+I0310 16:08:26.711539  1808 net.cpp:394] accuracy <- prob
+I0310 16:08:26.711544  1808 net.cpp:394] accuracy <- label
+I0310 16:08:26.711551  1808 net.cpp:356] accuracy -> accuracy
+I0310 16:08:26.711597  1808 net.cpp:96] Setting up accuracy
+I0310 16:08:26.711604  1808 net.cpp:103] Top shape: 1 1 1 1 (1)
+I0310 16:08:26.711609  1808 net.cpp:172] accuracy does not need backward computation.
+I0310 16:08:26.711613  1808 net.cpp:172] prob does not need backward computation.
+I0310 16:08:26.711616  1808 net.cpp:172] fc8_pascal does not need backward computation.
+I0310 16:08:26.711619  1808 net.cpp:172] fc8_kevin_encode does not need backward computation.
+I0310 16:08:26.711623  1808 net.cpp:172] fc8_kevin does not need backward computation.
+I0310 16:08:26.711627  1808 net.cpp:172] drop7 does not need backward computation.
+I0310 16:08:26.711629  1808 net.cpp:172] relu7 does not need backward computation.
+I0310 16:08:26.711632  1808 net.cpp:172] fc7 does not need backward computation.
+I0310 16:08:26.711635  1808 net.cpp:172] drop6 does not need backward computation.
+I0310 16:08:26.711639  1808 net.cpp:172] relu6 does not need backward computation.
+I0310 16:08:26.711642  1808 net.cpp:172] fc6 does not need backward computation.
+I0310 16:08:26.711654  1808 net.cpp:172] pool5 does not need backward computation.
+I0310 16:08:26.711658  1808 net.cpp:172] relu5 does not need backward computation.
+I0310 16:08:26.711661  1808 net.cpp:172] conv5 does not need backward computation.
+I0310 16:08:26.711664  1808 net.cpp:172] relu4 does not need backward computation.
+I0310 16:08:26.711668  1808 net.cpp:172] conv4 does not need backward computation.
+I0310 16:08:26.711671  1808 net.cpp:172] relu3 does not need backward computation.
+I0310 16:08:26.711675  1808 net.cpp:172] conv3 does not need backward computation.
+I0310 16:08:26.711678  1808 net.cpp:172] norm2 does not need backward computation.
+I0310 16:08:26.711681  1808 net.cpp:172] pool2 does not need backward computation.
+I0310 16:08:26.711685  1808 net.cpp:172] relu2 does not need backward computation.
+I0310 16:08:26.711688  1808 net.cpp:172] conv2 does not need backward computation.
+I0310 16:08:26.711693  1808 net.cpp:172] norm1 does not need backward computation.
+I0310 16:08:26.711695  1808 net.cpp:172] pool1 does not need backward computation.
+I0310 16:08:26.711720  1808 net.cpp:172] relu1 does not need backward computation.
+I0310 16:08:26.711724  1808 net.cpp:172] conv1 does not need backward computation.
+I0310 16:08:26.711729  1808 net.cpp:172] data does not need backward computation.
+I0310 16:08:26.711731  1808 net.cpp:208] This network produces output accuracy
+I0310 16:08:26.711752  1808 net.cpp:467] Collecting Learning Rate and Weight Decay.
+I0310 16:08:26.711768  1808 net.cpp:219] Network initialization done.
+I0310 16:08:26.711772  1808 net.cpp:220] Memory required for data: 219544836
+I0310 16:08:26.711892  1808 solver.cpp:41] Solver scaffolding done.
+I0310 16:08:26.711905  1808 caffe.cpp:115] Finetuning from ../../../models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel
+E0310 16:08:29.330379  1808 upgrade_proto.cpp:611] Attempting to upgrade input file specified using deprecated transformation parameters: ../../../models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel
+I0310 16:08:29.330456  1808 upgrade_proto.cpp:614] Successfully upgraded file specified using deprecated data transformation parameters.
+E0310 16:08:29.330463  1808 upgrade_proto.cpp:616] Note that future Caffe releases will only support transform_param messages for transformation fields.
+I0310 16:08:29.397337  1808 solver.cpp:160] Solving deepFashion
+I0310 16:08:29.397433  1808 solver.cpp:247] Iteration 0, Testing net (#0)
+I0310 16:08:38.038630  1808 solver.cpp:298]     Test net output #0: accuracy = 0
+I0310 16:08:38.144857  1808 solver.cpp:191] Iteration 0, loss = 3.43394
+I0310 16:08:38.144923  1808 solver.cpp:403] Iteration 0, lr = 0.001
+I0310 16:08:43.610079  1808 solver.cpp:191] Iteration 20, loss = 3.21517
+I0310 16:08:43.610280  1808 solver.cpp:403] Iteration 20, lr = 0.001
+I0310 16:08:49.079486  1808 solver.cpp:191] Iteration 40, loss = 3.01408
+I0310 16:08:49.079547  1808 solver.cpp:403] Iteration 40, lr = 0.001
+I0310 16:08:54.551391  1808 solver.cpp:191] Iteration 60, loss = 5.89973
+I0310 16:08:54.551447  1808 solver.cpp:403] Iteration 60, lr = 0.001
+I0310 16:09:00.023808  1808 solver.cpp:191] Iteration 80, loss = 2.80508
+I0310 16:09:00.023867  1808 solver.cpp:403] Iteration 80, lr = 0.001
+I0310 16:09:05.715158  1808 solver.cpp:317] Snapshotting to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_100.caffemodel
+I0310 16:09:06.525043  1808 solver.cpp:324] Snapshotting solver state to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_100.solverstate
+I0310 16:09:06.933100  1808 solver.cpp:247] Iteration 100, Testing net (#0)
+I0310 16:09:15.464570  1808 solver.cpp:298]     Test net output #0: accuracy = 0.109687
+I0310 16:09:15.551820  1808 solver.cpp:191] Iteration 100, loss = 3.24048
+I0310 16:09:15.551879  1808 solver.cpp:403] Iteration 100, lr = 0.001
+I0310 16:09:21.029645  1808 solver.cpp:191] Iteration 120, loss = 3.09782
+I0310 16:09:21.029713  1808 solver.cpp:403] Iteration 120, lr = 0.001
+I0310 16:09:26.510354  1808 solver.cpp:191] Iteration 140, loss = 3.08625
+I0310 16:09:26.510423  1808 solver.cpp:403] Iteration 140, lr = 0.001
+I0310 16:09:31.995614  1808 solver.cpp:191] Iteration 160, loss = 2.76893
+I0310 16:09:31.995683  1808 solver.cpp:403] Iteration 160, lr = 0.001
+I0310 16:09:37.482748  1808 solver.cpp:191] Iteration 180, loss = 2.87903
+I0310 16:09:37.482813  1808 solver.cpp:403] Iteration 180, lr = 0.001
+I0310 16:09:43.254720  1808 solver.cpp:317] Snapshotting to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_200.caffemodel
+I0310 16:09:44.111527  1808 solver.cpp:324] Snapshotting solver state to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_200.solverstate
+I0310 16:09:44.557400  1808 solver.cpp:247] Iteration 200, Testing net (#0)
+I0310 16:09:53.132499  1808 solver.cpp:298]     Test net output #0: accuracy = 0.265625
+I0310 16:09:53.219380  1808 solver.cpp:191] Iteration 200, loss = 2.81195
+I0310 16:09:53.219445  1808 solver.cpp:403] Iteration 200, lr = 0.001
+I0310 16:09:58.700655  1808 solver.cpp:191] Iteration 220, loss = 2.49828
+I0310 16:09:58.700724  1808 solver.cpp:403] Iteration 220, lr = 0.001
+I0310 16:10:04.181041  1808 solver.cpp:191] Iteration 240, loss = 2.41164
+I0310 16:10:04.181112  1808 solver.cpp:403] Iteration 240, lr = 0.001
+I0310 16:10:09.671053  1808 solver.cpp:191] Iteration 260, loss = 2.45198
+I0310 16:10:09.671114  1808 solver.cpp:403] Iteration 260, lr = 0.001
+I0310 16:10:15.150756  1808 solver.cpp:191] Iteration 280, loss = 2.48566
+I0310 16:10:15.150812  1808 solver.cpp:403] Iteration 280, lr = 0.001
+I0310 16:10:20.836316  1808 solver.cpp:317] Snapshotting to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_300.caffemodel
+I0310 16:10:21.592770  1808 solver.cpp:324] Snapshotting solver state to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_300.solverstate
+I0310 16:10:22.008381  1808 solver.cpp:247] Iteration 300, Testing net (#0)
+I0310 16:10:30.530113  1808 solver.cpp:298]     Test net output #0: accuracy = 0.345313
+I0310 16:10:30.617045  1808 solver.cpp:191] Iteration 300, loss = 2.25645
+I0310 16:10:30.617108  1808 solver.cpp:403] Iteration 300, lr = 0.001
+I0310 16:10:36.088682  1808 solver.cpp:191] Iteration 320, loss = 2.23281
+I0310 16:10:36.088745  1808 solver.cpp:403] Iteration 320, lr = 0.001
+I0310 16:10:41.558933  1808 solver.cpp:191] Iteration 340, loss = 2.23718
+I0310 16:10:41.558990  1808 solver.cpp:403] Iteration 340, lr = 0.001
+I0310 16:10:47.031009  1808 solver.cpp:191] Iteration 360, loss = 2.18274
+I0310 16:10:47.031071  1808 solver.cpp:403] Iteration 360, lr = 0.001
+I0310 16:10:52.499135  1808 solver.cpp:191] Iteration 380, loss = 2.2595
+I0310 16:10:52.499188  1808 solver.cpp:403] Iteration 380, lr = 0.001
+I0310 16:10:58.199823  1808 solver.cpp:317] Snapshotting to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_400.caffemodel
+I0310 16:10:58.950820  1808 solver.cpp:324] Snapshotting solver state to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_400.solverstate
+I0310 16:10:59.363802  1808 solver.cpp:247] Iteration 400, Testing net (#0)
+I0310 16:11:07.870059  1808 solver.cpp:298]     Test net output #0: accuracy = 0.417188
+I0310 16:11:07.956359  1808 solver.cpp:191] Iteration 400, loss = 1.52031
+I0310 16:11:07.956423  1808 solver.cpp:403] Iteration 400, lr = 0.001
+I0310 16:11:13.416723  1808 solver.cpp:191] Iteration 420, loss = 1.61482
+I0310 16:11:13.416782  1808 solver.cpp:403] Iteration 420, lr = 0.001
+I0310 16:11:18.880215  1808 solver.cpp:191] Iteration 440, loss = 2.15863
+I0310 16:11:18.880282  1808 solver.cpp:403] Iteration 440, lr = 0.001
+I0310 16:11:24.348577  1808 solver.cpp:191] Iteration 460, loss = 2.08344
+I0310 16:11:24.348641  1808 solver.cpp:403] Iteration 460, lr = 0.001
+I0310 16:11:29.816442  1808 solver.cpp:191] Iteration 480, loss = 1.91822
+I0310 16:11:29.816500  1808 solver.cpp:403] Iteration 480, lr = 0.001
+I0310 16:11:35.507356  1808 solver.cpp:317] Snapshotting to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_500.caffemodel
+I0310 16:11:36.271729  1808 solver.cpp:324] Snapshotting solver state to /data/deepfashion/color_label_jabong/snapshot/color_label_jabong_iter_500.solverstate
+I0310 16:11:36.771272  1808 solver.cpp:228] Iteration 500, loss = 1.80037
+I0310 16:11:36.771332  1808 solver.cpp:247] Iteration 500, Testing net (#0)
+I0310 16:11:45.277652  1808 solver.cpp:298]     Test net output #0: accuracy = 0.459375
+I0310 16:11:45.277813  1808 solver.cpp:233] Optimization Done.
+I0310 16:11:45.277820  1808 caffe.cpp:121] Optimization Done.

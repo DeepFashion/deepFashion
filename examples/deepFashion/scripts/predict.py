@@ -9,8 +9,9 @@ import sys
 import argparse
 import glob
 import time
-
-# import caffe
+import sys
+sys.path.append('/home/ubuntu/caffe-cvprw15/python/')
+import caffe
 
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
@@ -56,7 +57,7 @@ def parseArgs():
     )
     parser.add_argument(
         "--mean_file",
-        default="/home/ubuntu/caffe-cvprw15/pycaffe/caffe/imagenet/ilsvrc_2012_mean.npy",
+        default="/home/ubuntu/caffe-cvprw15/python/caffe/imagenet/ilsvrc_2012_mean.npy",
         help="Data set image mean of H x W x K dimensions (numpy array). " +
              "Set to '' for no mean subtraction."
     )
@@ -101,9 +102,8 @@ def InputImagePredictAux(args):
         mean = np.load(args.mean_file)
     if args.channel_swap:
         channel_swap = [int(s) for s in args.channel_swap.split(',')]
-
     # Make classifier.
-    classifier = caffe.Classifier(args.model_def, args.pretrained_model,
+    classifier = caffe.Classifier((args.model_def).encode('ascii','ignore'), (args.pretrained_model).encode('ascii','ignore'),
             image_dims=image_dims, gpu=args.gpu, mean=mean,
             input_scale=args.input_scale, raw_scale=args.raw_scale,
             channel_swap=channel_swap)
@@ -126,6 +126,8 @@ def InputImagePredictAux(args):
     # Classify.
     start = time.time()
     predictions = classifier.predict(inputs,False)
+    for i in range(predictions.shape[0]):
+	predictions[i:]=(predictions[i:]>0.5).astype(int)
     print "Done in %.2f s." % (time.time() - start)
     # Save
     np.save(args.output_file, predictions)
@@ -137,7 +139,7 @@ def InputImagePredict(input_file,settings_file):
     defaultData={
     'center_only':False, 'channel_swap':'2,1,0', 'ext':'jpg', 'gpu':False, 
     'images_dim':'256,256','input_scale':None, 
-    'mean_file':'/home/ubuntu/caffe-cvprw15/pycaffe/caffe/imagenet/ilsvrc_2012_mean.npy', 
+    'mean_file':'/home/ubuntu/caffe-cvprw15/python/caffe/imagenet/ilsvrc_2012_mean.npy', 
     'output_file':'result.npy', 
     'raw_scale':255.0
     } 
@@ -152,5 +154,5 @@ def InputImagePredict(input_file,settings_file):
 
 
 if __name__ == '__main__':
-    # InputImagePredictAux(parseArgs())
-    print InputImagePredict('f1','../hello/SETTINGS.json')
+    print InputImagePredictAux(parseArgs())
+    #print InputImagePredict('f1','../hello/SETTINGS.json')
