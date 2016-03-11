@@ -1,7 +1,9 @@
 name: "deepFashion_Autoencoder"
 input: "data"
+input_dim: 10
 input_dim: 3
-input_dim: 227
+input_dim: 50 
+input_dim: 50
 layers {
   bottom: "data"
   top: "flatdata"
