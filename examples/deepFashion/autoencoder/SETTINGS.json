@@ -1,0 +1,19 @@
+{
+    "DATASET_ROOT": "/data/deepfashion/autoencoder/", 
+    "DBNAME_TEST": "/data/deepfashion/autoencoder/jabong_train_lmdb_50", 
+    "DBNAME_TRAIN": "/data/deepfashion/autoencoder/jabong_train_lmdb_50", 
+    "DBTYPE": "lmdb", 
+    "FEATURE_LEN": 50, 
+    "MODEL_DEF_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/deepFashion_48_deploy.prototxt", 
+    "MODEL_FILE": "/data/deepfashion/autoencoder/snapshot/deepFashion_autoencoder_iter_100000.caffemodel", 
+    "RESIZE": 256, 
+    "RESULT_FOLDER": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/analysis", 
+    "SNAPSHOT_LOC": "/data/deepfashion/autoencoder/snapshot/deepFashion_autoencoder", 
+    "TEST_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/test.txt", 
+    "TEST_FILE_DATA": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/test.txt.data", 
+    "TEST_FILE_LABEL": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/test.txt.labels", 
+    "TOP_K": 30, 
+    "TRAIN_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/train.txt", 
+    "TRAIN_FILE_DATA": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/train.txt.data", 
+    "TRAIN_FILE_LABEL": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/autoencoder/train.txt.labels"
+}
