@@ -3,15 +3,16 @@ import scipy.io
 import h5py
 from precision import *
 import argparse
-
+import json
 def parseArgs():
     parser = argparse.ArgumentParser()
     # Required arguments: input and settings file
     parser.add_argument(
         "settings_file",
-        help="Input image, directory, or npy."
+        help="settings file"
     )
-
+    args = parser.parse_args()
+    return args
 
 def main(settings_file):
 	with open(settings_file, 'r') as content_file:
@@ -71,3 +72,4 @@ def main(settings_file):
 if __name__ == '__main__':
 	args=parseArgs()
 	mapRes, precision_at_k = main(args.settings_file)
+	print mapRes

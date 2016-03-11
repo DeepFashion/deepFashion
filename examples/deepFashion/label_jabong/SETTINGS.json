@@ -1,0 +1,19 @@
+{
+    "DATASET_ROOT": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/", 
+    "DBNAME_TEST": "/data/deepfashion/label_jabong/label_jabong_test", 
+    "DBNAME_TRAIN": "/data/deepfashion/label_jabong/label_jabong_TRAIN", 
+    "DBTYPE": "leveldb", 
+    "FEATURE_LEN": 48, 
+    "MODEL_DEF_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/deepFashion_48_deploy.prototxt", 
+    "MODEL_FILE": "/data/deepfashion/label_jabong/snapshot/label_jabong_iter_50000.caffemodel", 
+    "RESIZE": 256, 
+    "RESULT_FOLDER": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/analysis", 
+    "SNAPSHOT_LOC": "/data/deepfashion/label_jabong/snapshot/label_jabong", 
+    "TEST_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/test.txt", 
+    "TEST_FILE_DATA": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/test.txt.data", 
+    "TEST_FILE_LABEL": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/test.txt.labels", 
+    "TOP_K": 30, 
+    "TRAIN_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/train.txt", 
+    "TRAIN_FILE_DATA": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/train.txt.data", 
+    "TRAIN_FILE_LABEL": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/train.txt.labels"
+}

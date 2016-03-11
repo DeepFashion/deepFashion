@@ -1,0 +1,35 @@
+I0308 13:41:54.679841  4464 caffe.cpp:99] Use GPU with device ID 0
+I0308 13:41:55.047937  4464 caffe.cpp:107] Starting Optimization
+I0308 13:41:55.048946  4464 solver.cpp:32] Initializing solver from parameters: 
+train_net: "train_fashion_48.prototxt"
+test_net: "test_fashion_48.prototxt"
+test_iter: 100
+test_interval: 100
+base_lr: 0.001
+display: 20
+max_iter: 50000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 25000
+snapshot: 10000
+snapshot_prefix: "/data/snapshot/deepFashion_Jabong_48_color_label"
+I0308 13:41:55.048993  4464 solver.cpp:58] Creating training net from train_net file: train_fashion_48.prototxt
+F0308 13:41:55.050868  4464 io.cpp:33] Check failed: fd != -1 (-1 vs. -1) File not found: train_fashion_48.prototxt
+*** Check failure stack trace: ***
+    @     0x7f41ff006daa  (unknown)
+    @     0x7f41ff006ce4  (unknown)
+    @     0x7f41ff0066e6  (unknown)
+    @     0x7f41ff009687  (unknown)
+    @           0x45ef3d  caffe::ReadProtoFromTextFile()
+    @           0x4ac3c4  caffe::ReadNetParamsFromTextFileOrDie()
+    @           0x46b77f  caffe::Solver<>::InitTrainNet()
+    @           0x46c816  caffe::Solver<>::Init()
+    @           0x46c976  caffe::Solver<>::Solver()
+    @           0x419bc0  caffe::GetSolver<>()
+    @           0x415fd4  train()
+    @           0x4109c1  main
+    @     0x7f41faf1dec5  (unknown)
+    @           0x414b27  (unknown)
+    @              (nil)  (unknown)
