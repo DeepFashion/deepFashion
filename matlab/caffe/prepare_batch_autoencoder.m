@@ -22,7 +22,7 @@ parfor i=1:num_images
             im = cat(3,im,im,im);
         end
         % Crop the center of the image
-	im = im(:,:,[3 2 1])
+	    im = im(:,:,[3 2 1])
         images(:,:,:,i) = permute(im,[2 1 3]);
     catch
         warning('Problems with file',image_files{i});
