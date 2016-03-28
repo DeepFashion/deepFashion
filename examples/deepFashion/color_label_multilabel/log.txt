@@ -1,0 +1,35 @@
+I0328 18:27:09.005650  2911 caffe.cpp:99] Use GPU with device ID 0
+I0328 18:27:09.361407  2911 caffe.cpp:107] Starting Optimization
+I0328 18:27:09.361527  2911 solver.cpp:32] Initializing solver from parameters: 
+train_net: "train_fashion_48.prototxt"
+test_net: "test_fashion_48.prototxt"
+test_iter: 100
+test_interval: 100
+base_lr: 0.001
+display: 20
+max_iter: 10000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 25000
+snapshot: 2500
+snapshot_prefix: "/data/deepfashion/color_label_multilabel/snapshot/color_label_multilabel"
+I0328 18:27:09.361560  2911 solver.cpp:58] Creating training net from train_net file: train_fashion_48.prototxt
+[libprotobuf ERROR google/protobuf/text_format.cc:245] Error parsing text-format caffe.NetParameter: 36:16: Message type "caffe.V0LayerParameter" has no field named "slice_point".
+F0328 18:27:09.361707  2911 upgrade_proto.cpp:623] Check failed: ReadProtoFromTextFile(param_file, param) Failed to parse NetParameter file: train_fashion_48.prototxt
+*** Check failure stack trace: ***
+    @     0x7f38d5628daa  (unknown)
+    @     0x7f38d5628ce4  (unknown)
+    @     0x7f38d56286e6  (unknown)
+    @     0x7f38d562b687  (unknown)
+    @           0x4ac42e  caffe::ReadNetParamsFromTextFileOrDie()
+    @           0x46b77f  caffe::Solver<>::InitTrainNet()
+    @           0x46c816  caffe::Solver<>::Init()
+    @           0x46c976  caffe::Solver<>::Solver()
+    @           0x419bc0  caffe::GetSolver<>()
+    @           0x415fd4  train()
+    @           0x4109c1  main
+    @     0x7f38d153fec5  (unknown)
+    @           0x414b27  (unknown)
+    @              (nil)  (unknown)

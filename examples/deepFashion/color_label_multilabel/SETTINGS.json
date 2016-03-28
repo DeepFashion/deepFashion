@@ -3,7 +3,7 @@
     "DBNAME_TEST": "/data/deepfashion/color_label_multilabel/color_label_multilabel_test", 
     "ALT_DBNAME_TEST": "/data/deepfashion/color_label_multilabel/color_label_multilabel_test_alt",
     "DBNAME_TRAIN": "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN", 
-    "ALT_DBNAME_TRAIN": "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN_ALT"
+    "ALT_DBNAME_TRAIN": "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN_ALT",
     "DBTYPE": "leveldb", 
     "FEATURE_LEN": 48, 
     "MODEL_DEF_FILE": "/home/ubuntu/caffe-cvprw15/examples/deepFashion/color_label_multilabel/deepFashion_48_deploy.prototxt", 
