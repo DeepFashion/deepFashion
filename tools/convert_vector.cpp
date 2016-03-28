@@ -84,8 +84,10 @@ int main(int argc, char** argv) {
   }
   LOG(INFO) << "A total of " << lines.size() << " vectors.";
 
-  // Create new DB
-  std::string dbname = argv[2];
+
+  const string& db_backend = FLAGS_backend;
+  const char* db_path = argv[2];
+
 
 
  // Open new db
