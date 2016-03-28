@@ -33,6 +33,7 @@ layers {
   layer {
     name: "sliceLabels"
     type: "slice"
+    slice_dim: 1
     slice_point: 1
   }
   bottom: "labels"
