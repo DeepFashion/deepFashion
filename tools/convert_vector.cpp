@@ -19,9 +19,9 @@
 #include "glog/logging.h"
 
 #include "caffe/proto/caffe.pb.h"
-#include "caffe/util/db.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/rng.hpp"
+
 
 using namespace caffe;  // NOLINT(build/namespaces)
 using std::pair;
