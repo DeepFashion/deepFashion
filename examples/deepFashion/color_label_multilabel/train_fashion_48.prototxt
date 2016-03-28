@@ -15,8 +15,36 @@ layers {
     det_fg_fraction: 0.25
   }
   top: "data"
-  top: "label"
+  top: "randomshit"
 }
+
+layers {
+  layer {
+    name: "labels"
+    type: "data"
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN_ALT"
+    batchsize: 32
+  }
+  top: "labels"
+}
+
+
+layers {
+  layer {
+    name: "sliceLabels"
+    type: "slice"
+    slice_param 
+    {
+      axis: 1
+      slice_point: 1
+    }
+  }
+  bottom: "labels"
+  top: "labels0"
+  top: "labels1"
+}
+
+
 layers {
   layer {
     name: "conv1"
@@ -373,7 +401,7 @@ layers {
     # network doesn't populate this layer with its fc8
     name: "fc8_pascal"
     type: "innerproduct"
-    num_output: 10
+    num_output:31 
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -396,7 +424,7 @@ layers {
     type: "softmax_loss"
   }
   bottom: "fc8_pascal"
-  bottom: "label"
+  bottom: "labels0"
 }
 
 

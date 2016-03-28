@@ -15,8 +15,37 @@ layers {
     det_fg_fraction: 0.25
   }
   top: "data"
-  top: "label"
+  top: "randomshit"
 }
+
+layers {
+  layer {
+    name: "labels"
+    type: "data"
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test_alt"
+    batchsize: 32
+  }
+  top: "labels"
+}
+
+
+layers {
+  layer {
+    name: "sliceLabels"
+    type: "slice"
+    slice_param 
+    {
+      axis: 1
+      slice_point: 1
+    }
+  }
+  bottom: "labels"
+  top: "labels0"
+  top: "labels1"
+}
+
+
+
 layers {
   layer {
     name: "conv1"
@@ -404,6 +433,6 @@ layers {
     type: "accuracy"
   }
   bottom: "prob"
-  bottom: "label"
+  bottom: "labels0"
   top: "accuracy"
 }
