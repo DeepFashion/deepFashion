@@ -408,16 +408,33 @@ layers {
 }
 
 layers {
-  name: "loss"
+  name: "loss1"
   type: SOFTMAX_LOSS
   bottom: "fc8_pascal"
   bottom: "labels0"
 }
+
 layers {
-  name: "accuracy"
+  name: "loss2"
+  type: SOFTMAX_LOSS
+  bottom: "fc8_pascal"
+  bottom: "labels1"
+}
+
+layers {
+  name: "accuracy1"
   type: ACCURACY
   bottom: "fc8_pascal"
   bottom: "labels0"
-  top: "accuracy"
+  top: "accuracy1"
+  include: { phase: TEST }
+}
+
+layers {
+  name: "accuracy2"
+  type: ACCURACY
+  bottom: "fc8_pascal"
+  bottom: "labels1"
+  top: "accuracy2"
   include: { phase: TEST }
 }
