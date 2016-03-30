@@ -62,7 +62,7 @@ layers {
 }
 
 
-layer 
+layers 
 {
   name: "sliceL"
   type: SLICE
@@ -71,7 +71,6 @@ layer
   top: "labels1"
   slice_param 
   {
-    axis: 1
     slice_point: 1
   }
 }
