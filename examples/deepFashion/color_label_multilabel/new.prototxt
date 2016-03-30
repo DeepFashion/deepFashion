@@ -382,12 +382,11 @@ layers {
   top: "fc8_deepfashion_encode"
 }
 
-
 layers {
-  name: "fc8_pascal"
+  name: "fc8_pascal_label"
   type: INNER_PRODUCT
   bottom: "fc8_deepfashion_encode"
-  top: "fc8_pascal"
+  top: "fc8_pascal_label"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
   blobs_lr: 10
   blobs_lr: 20
@@ -406,24 +405,49 @@ layers {
   }
 }
 
+
+layers {
+  name: "fc8_pascal_color"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_color"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 10
+  blobs_lr: 20
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 16
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+
 layers {
   name: "loss1"
   type: SOFTMAX_LOSS
-  bottom: "fc8_pascal"
+  bottom: "fc8_pascal_label"
   bottom: "labels0"
 }
 
 layers {
   name: "loss2"
   type: SOFTMAX_LOSS
-  bottom: "fc8_pascal"
+  bottom: "fc8_pascal_color"
   bottom: "labels1"
 }
 
 layers {
   name: "accuracy1"
   type: ACCURACY
-  bottom: "fc8_pascal"
+  bottom: "fc8_pascal_label"
   bottom: "labels0"
   top: "accuracy1"
   include: { phase: TEST }
@@ -432,7 +456,7 @@ layers {
 layers {
   name: "accuracy2"
   type: ACCURACY
-  bottom: "fc8_pascal"
+  bottom: "fc8_pascal_color"
   bottom: "labels1"
   top: "accuracy2"
   include: { phase: TEST }
