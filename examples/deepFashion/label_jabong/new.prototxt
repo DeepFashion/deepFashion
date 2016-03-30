@@ -1,7 +1,7 @@
 name: "deepFashion"
 layers {
   name: "data"
-  type: "Data"
+  type: DATA 
   top: "data"
   top: "label"
   data_param 
@@ -14,17 +14,12 @@ layers {
     crop_size: 227
     mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
     mirror: true
-    det_context_pad: 16
-    det_crop_mode: "warp"
-    det_fg_threshold: 0.5
-    det_bg_threshold: 0.5
-    det_fg_fraction: 0.25
   }
   include: { phase: TRAIN }
 }
 layers {
   name: "data"
-  type: "data"
+  type: DATA
   top: "data"
   top: "label"
   data_param {
@@ -35,11 +30,6 @@ layers {
     crop_size: 227
     mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
     mirror: true
-    det_context_pad: 16
-    det_crop_mode: "warp"
-    det_fg_threshold: 0.5
-    det_bg_threshold: 0.5
-    det_fg_fraction: 0.25
   }
   include: { phase: TEST }
 }
