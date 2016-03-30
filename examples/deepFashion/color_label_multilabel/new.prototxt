@@ -358,8 +358,8 @@ layers {
   bottom: "fc7"
   top: "fc8_deepfashion"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 10
-  blobs_lr: 20
+  blobs_lr: 1
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
