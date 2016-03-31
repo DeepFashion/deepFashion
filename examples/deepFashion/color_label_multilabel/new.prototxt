@@ -3,7 +3,6 @@ layers {
   name: "data"
   type: DATA
   top: "data"
-  top: "randomshit"
   data_param 
   {
     source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN"
@@ -35,7 +34,6 @@ layers {
   name: "data"
   type: DATA
   top: "data"
-  top: "randomshit"
   data_param {
     source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test"
     batch_size: 32
