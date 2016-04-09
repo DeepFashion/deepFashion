@@ -49,9 +49,9 @@ def computeNN(settings_file, query_binary):
 	result=list()
 		# query_binary = np.array([tst_binary[i,:]]
 	if mode==1:
-		similarity = distance.cdist(trn_binary,query_binary,'hamming')
+		similarity = distance.cdist(binary_train,query_binary,'hamming')
 	elif mode ==2:
-		similarity = distance.cdist(trn_binary,query_binary,'euclidean')
+		similarity = distance.cdist(binary_train,query_binary,'euclidean')
 
 	y2=np.argsort(similarity[:,0]);
 
