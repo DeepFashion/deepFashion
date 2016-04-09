@@ -1,8 +1,12 @@
 import json
 with open('SETTINGS.json', 'r') as content_file:
 	settings = json.load(content_file)
-FILENAME_TRAIN = settings['TEST_FILE']
-FILENAME_TEST = settings['TRAIN_FILE']
+#FILENAME_TRAIN = settings['TEST_FILE']
+#FILENAME_TEST = settings['TRAIN_FILE']
+
+FILENAME_TRAIN = 'train_3.txt'
+FILENAME_TEST = 'test_3.txt'
+
 
 def main(FILENAME):
 	with open(FILENAME,'r') as f:

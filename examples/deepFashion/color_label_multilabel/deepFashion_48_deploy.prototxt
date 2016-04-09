@@ -196,17 +196,17 @@ layers {
   }
 }
 layers {
-  name: "fc8_kevin"
+  name: "fc8_deepfashion"
   type: INNER_PRODUCT
   bottom: "fc7"
-  top: "fc8_kevin"
+  top: "fc8_deepfashion"
   inner_product_param {
     num_output: 48
   }
 }
 layers {
-  name: "fc8_kevin_encode"
-  bottom: "fc8_kevin"
-  top: "fc8_kevin_encode"
+  name: "fc8_deepfashion_encode"
+  bottom: "fc8_deepfashion"
+  top: "fc8_deepfashion_encode"
   type: SIGMOID
 }

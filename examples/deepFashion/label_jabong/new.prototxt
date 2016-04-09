@@ -3,11 +3,12 @@ layers {
   name: "data"
   type: DATA 
   top: "data"
-  top: "label"
+  top: "random"
   data_param 
   {
-    source: "/data/deepfashion/label_jabong/label_jabong_TRAIN"
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN"
     batch_size: 32
+    backend: LMDB
   }
   transform_param 
   {
@@ -17,14 +18,30 @@ layers {
   }
   include: { phase: TRAIN }
 }
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param
+  {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN_ALT"
+    batch_size: 32
+    backend: LMDB
+  }
+  include: { phase: TRAIN }
+}
+
+
 layers {
   name: "data"
   type: DATA
   top: "data"
-  top: "label"
+  top: "random"
   data_param {
-    source: "/data/deepfashion/label_jabong/label_jabong_test"
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test"
     batch_size: 32
+    backend: LMDB
   }
   transform_param {
     crop_size: 227
@@ -33,6 +50,35 @@ layers {
   }
   include: { phase: TEST }
 }
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param
+  {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test_alt"
+    batch_size: 32
+    backend: LMDB
+  } 
+  include: { phase: TEST }
+} 
+
+layers
+{ 
+  name: "sliceL"
+  type: SLICE
+  bottom: "labels"
+  top: "labels0"
+  top: "labels1"
+  slice_param
+  { 
+    slice_point: 1
+  }
+}
+
+
+
 layers {
   name: "conv1"
   type: CONVOLUTION
@@ -341,13 +387,13 @@ layers {
 
 
 layers {
-  name: "fc8_pascal"
+  name: "fc8_pascal_label"
   type: INNER_PRODUCT
   bottom: "fc8_deepfashion_encode"
-  top: "fc8_pascal"
+  top: "fc8_pascal_label"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 10
-  blobs_lr: 20
+  blobs_lr: 0
+  blobs_lr: 0
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -364,16 +410,50 @@ layers {
 }
 
 layers {
+  name: "fc8_pascal_color"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_color"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 10
+  blobs_lr: 20  
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 16
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+
+
+layers {
   name: "loss"
   type: SOFTMAX_LOSS
-  bottom: "fc8_pascal"
-  bottom: "label"
+  bottom: "fc8_pascal_color"
+  bottom: "labels1"
 }
 layers {
   name: "accuracy"
   type: ACCURACY
-  bottom: "fc8_pascal"
-  bottom: "label"
+  bottom: "fc8_pascal_color"
+  bottom: "labels1"
   top: "accuracy"
   include: { phase: TEST }
 }
+
+layers {
+  name: "silence"
+  type: SILENCE
+  bottom: "labels0"
+  bottom: "random"
+  bottom: "fc8_pascal_label"
+}
+

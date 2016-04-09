@@ -1,0 +1,81 @@
+name: "deepFashion"
+layers {
+  name: "data"
+  type: DATA
+  top: "data"
+  data_param 
+  {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN"
+    batch_size: 32
+  }
+  transform_param 
+  {
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+    mirror: true
+  }
+  include: { phase: TRAIN }
+}
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param 
+  {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_TRAIN_ALT"
+    batch_size: 32
+  }
+  include: { phase: TRAIN }
+}
+
+
+layers {
+  name: "data"
+  type: DATA
+  top: "data"
+  data_param {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test"
+    batch_size: 32
+  }
+  transform_param {
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+    mirror: true
+  }
+  include: { phase: TEST }
+}
+
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param 
+  {
+    source: "/data/deepfashion/color_label_multilabel/color_label_multilabel_test_alt"
+    batch_size: 32
+  }
+  include: { phase: TEST }
+}
+
+
+layers 
+{
+  name: "sliceL"
+  type: SLICE
+  bottom: "labels"
+  top: "labels0"
+  top: "labels1"
+  slice_param 
+  {
+    slice_point: 1
+  }
+}
+
+layers {
+  name: "silence"
+  type: SILENCE
+  bottom: "data"
+}
+

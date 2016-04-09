@@ -6,12 +6,10 @@ def make(f1,f2):
 	for line in data:
 		line=line.strip()
 		line=line.split(" ")
-		val=line[0]+" "+"-1"
+		val=line[0]+" "+line[2]
 		wf.write(val+'\n')
 	wf.close()
 
-make('train.txt','train_1.txt')
-make('test.txt','test_1.txt')
-
-
+make('train.txt','train_3.txt')
+make('test.txt','test_3.txt')
 
