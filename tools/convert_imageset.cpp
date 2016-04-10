@@ -65,11 +65,6 @@ int main(int argc, char** argv) {
   while (infile >> filename >> label) {
     lines.push_back(std::make_pair(filename, label));
   }
-  if (FLAGS_shuffle) {
-    // randomly shuffle data
-    LOG(INFO) << "Shuffling data";
-    shuffle(lines.begin(), lines.end());
-  }
   LOG(INFO) << "A total of " << lines.size() << " images.";
 
   const string& db_backend = FLAGS_backend;

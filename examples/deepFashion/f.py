@@ -12,10 +12,10 @@ urlval="http://static2.jassets.com/p/Rider-Republic-Brown-Solid-Skirt-8202-30589
 result=compute(urlval)
 
 for i in range(len(result)):
-	res[i]=res[i].strip()
-	res[i]=res[i][8:]
-	res[i].replace("_", "/")
-	res[i].replace("catalog/s", "catalog_s")
+	result[i]=result[i].strip()
+	result[i]=result[i][8:]
+	result[i]=result[i].replace("_", "/")
+	result[i]=result[i].replace("catalog/s", "catalog_s")
 print result
 
 

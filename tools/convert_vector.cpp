@@ -74,11 +74,6 @@ int main(int argc, char** argv) {
     }
     lines.push_back(std::make_pair(filename, vecs));
   }
-  if (FLAGS_shuffle) {
-    // randomly shuffle data
-    LOG(INFO) << "Shuffling data";
-    shuffle(lines.begin(), lines.end());
-  }
   if (lines.size() < 1) {
     LOG(INFO) << "Read " << lines.size() << " vectors, aborting.";
     return 1;
