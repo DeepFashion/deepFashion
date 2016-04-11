@@ -153,10 +153,10 @@ def PreprocessInput(args):
 
 
 	
-def InputImagePredict(input_file,settings_file,mode):
+def InputImagePredict(input_file,settings_file,mode,classifier):
 	defaultData=getSetings(settings_file)
 	inputs=PreprocessInput(defaultData)
-	classifier=CreateClassifier(settings_file)
+	# classifier=CreateClassifier(settings_file)
 	# Classify.
 	start = time.time()
 	predictions = classifier.predict(inputs,False)

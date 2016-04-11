@@ -1,18 +1,19 @@
 from threading import Lock
 clientLock=Lock()
+import predictTags as predict
 class caffeThreadManager:
-	def __init__(self,numThreads):
+	def __init__(self,numThreads,settings_file):
 		self.threadPool = []
+		self.settings_file=settings_file
 		self.createPool(numThreads)
 
 	def _create_caffe_client(self):
-		pass
-		# try:
-		# 	c = client.Client(self.clientIP, self.clientPort)
-		# 	return c
-		# except:
-		# 	print 'Connection to Client Failed, Check if the weaver instance is running'
-		# 	return None
+		try:
+			c = predict.CreateClassifier(self.settings_file)
+			return c
+		except:
+			print 'Some error'
+			return None
 
 	def createPool(self,numThreads):
 		with clientLock:
