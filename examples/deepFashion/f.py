@@ -17,10 +17,10 @@ def compute(imageURL):
 	start_time = time.time()
 	
 	classifier=threadPoolObj.getThread()
-    if not classifier:
-        print 'Unable to contact the weaver server'
-        assert False
-    print 'Recieved a Thread'
+	if not classifier:
+		print 'Unable to contact the weaver server'
+		assert False
+	print 'Recieved a Thread'
 
 	embedding=predict.InputImagePredict('/home/ubuntu/caffe-cvprw15/examples/deepFashion/tmp/0001.jpg',SETTINGS_FILE,"embedding",classifier)
 	
