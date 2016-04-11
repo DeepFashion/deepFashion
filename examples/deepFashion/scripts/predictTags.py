@@ -105,7 +105,6 @@ def getSetings(settings_file):
 	with open(settings_file, 'r') as content_file:
 		settings = json.load(content_file)
 	defaultData['settings_file']=settings_file
-	defaultData['input_file']=input_file
 	defaultData['model_def']=settings['MODEL_DEF_FILE']
 	defaultData['pretrained_model']=settings['MODEL_FILE']
 	return dotdict(defaultData)
@@ -136,7 +135,7 @@ def CreateClassifier(settings_file):
 
 def PreprocessInput(args):
 	# Load numpy array (.npy), directory glob (*.jpg), or image file.
-	args=
+	
 	args.input_file = os.path.expanduser(args.input_file)
 	if args.input_file.endswith('npy'):
 		inputs = np.load(args.input_file)
@@ -155,6 +154,7 @@ def PreprocessInput(args):
 	
 def InputImagePredict(input_file,settings_file,mode):
 	defaultData=getSetings(settings_file)
+	defaultData['input_file']=input_file
 	inputs=PreprocessInput(defaultData)
 	classifier=CreateClassifier(settings_file)
 	# Classify.

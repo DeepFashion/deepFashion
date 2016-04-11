@@ -88,8 +88,8 @@ layers {
   type: CONVOLUTION
   bottom: "data"
   top: "conv1"
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   convolution_param {
@@ -139,8 +139,8 @@ layers {
   type: CONVOLUTION
   bottom: "norm1"
   top: "conv2"
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   convolution_param {
@@ -191,8 +191,8 @@ layers {
   type: CONVOLUTION
   bottom: "norm2"
   top: "conv3"
-  blobs_lr: 0
-  blobs_lr: 0
+  blobs_lr: 1
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   convolution_param {
@@ -220,8 +220,8 @@ layers {
   type: CONVOLUTION
   bottom: "conv3"
   top: "conv4"
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   convolution_param {
@@ -250,8 +250,8 @@ layers {
   type: CONVOLUTION
   bottom: "conv4"
   top: "conv5"
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   convolution_param {
@@ -291,8 +291,8 @@ layers {
   type: INNER_PRODUCT
   bottom: "pool5"
   top: "fc6"
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -328,8 +328,8 @@ layers {
   bottom: "fc6"
   top: "fc7"
   # Note that blobs_lr can be set to 0 to disable any fine-tuning of this, and any other, layer
-  blobs_lr: 0 
-  blobs_lr: 0
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -365,8 +365,8 @@ layers {
   bottom: "fc7"
   top: "fc8_deepfashion"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 10 
-  blobs_lr: 20
+  blobs_lr: 1 
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -396,8 +396,8 @@ layers {
   bottom: "fc8_deepfashion_encode"
   top: "fc8_pascal_label_mod"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 10
-  blobs_lr: 20
+  blobs_lr: 1
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -419,8 +419,8 @@ layers {
   bottom: "fc8_deepfashion_encode"
   top: "fc8_pascal_color_mod"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 0
-  blobs_lr: 0 
+  blobs_lr: 1
+  blobs_lr: 2 
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -442,8 +442,8 @@ layers {
   bottom: "fc8_deepfashion_encode"
   top: "fc8_pascal_fabric_mod"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 0
-  blobs_lr: 0
+  blobs_lr: 1
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
@@ -466,8 +466,8 @@ layers {
   bottom: "fc8_deepfashion_encode"
   top: "fc8_pascal_style_mod"
   # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
-  blobs_lr: 0
-  blobs_lr: 0
+  blobs_lr: 1
+  blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
