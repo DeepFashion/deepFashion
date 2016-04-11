@@ -3,6 +3,7 @@
 demostrate how to write a rpc server
 '''
 import json
+import sys
 sys.path.append('/home/ubuntu/caffe-cvprw15/examples/deepFashion/scripts')
 import predictTags as predict
 import getNear
@@ -10,15 +11,18 @@ import urllib
 import random
 import string
 
-import sys, os, uuid, time
+import  os, uuid, time
 sys.path.append(os.path.abspath(".."))
 import time
 from haigha.connection import Connection
 from haigha.message import Message
 
+SETTINGS_FILE_EMBEDDING='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/SETTINGS.json'
+SETTINGS_FILE_TAGS='/home/ubuntu/caffe-cvprw15/examples/deepFashion/multimodal/SETTINGS.json'
+
 
 try:
-    classifier = predict.CreateClassifier(self.settings_file)
+    classifier = predict.CreateClassifier(SETTINGS_FILE_TAGS)
     print "Creating caffe client"
 except:
     print 'Some error'
@@ -33,8 +37,6 @@ channel = connection.channel()
 channel.queue.declare(queue='rpc_queue', auto_delete=False)
 
 
-SETTINGS_FILE_EMBEDDING='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/SETTINGS.json'
-SETTINGS_FILE_TAGS='/home/ubuntu/caffe-cvprw15/examples/deepFashion/multimodal/SETTINGS.json'
 
 def computeNN(imageURL):
     filename=''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(10))+'.jpg'
@@ -62,8 +64,8 @@ def computeTags(imageURL):
     return tags
 
 def on_request(msg):
-    imageURL = msg.body
-    result=computeNN(imageURL)
+    imageURL = str(msg.body)
+    result=computeTags(imageURL)
     reply_to = msg.properties["reply_to"]
     correlation_id = msg.properties["correlation_id"]
     resp = Message(json.dumps(result), correlation_id=correlation_id)
