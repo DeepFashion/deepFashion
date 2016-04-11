@@ -5,6 +5,7 @@ import getNear
 import urllib
 import time
 import os
+import caffeClientManager as cCM
 
 
 SETTINGS_FILE='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/SETTINGS.json'
