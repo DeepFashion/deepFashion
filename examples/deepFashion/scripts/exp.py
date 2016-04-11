@@ -54,7 +54,7 @@ def computeNN(imageURL):
     resList=list()
     for val in result:
         resList.append({'imageURL':val,'productURL':'https://www.youtube.com/watch?v=IFUjwj_RB5o&nohtml5=False'})
-    return {'imageURL':imageURL,result:resList}
+    return {'imageURL':imageURL,'result':resList}
 
 
 def computeTags(imageURL):
@@ -64,11 +64,12 @@ def computeTags(imageURL):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
     tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifier)
-    return {'imageURL':imageURL,result:tags}
+    return {'imageURL':imageURL,'result':tags}
 
 def on_request(msg):
     imageURL = str(msg.body)
     result=computeTags(imageURL)
+    print result
     reply_to = msg.properties["reply_to"]
     correlation_id = msg.properties["correlation_id"]
     resp = Message(json.dumps(result), correlation_id=correlation_id)
