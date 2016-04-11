@@ -103,11 +103,12 @@ def InputImagePredictAux(args):
     if args.channel_swap:
         channel_swap = [int(s) for s in args.channel_swap.split(',')]
     # Make classifier.
+    start = time.time()
     classifier = caffe.Classifier((args.model_def).encode('ascii','ignore'), (args.pretrained_model).encode('ascii','ignore'),
             image_dims=image_dims, gpu=args.gpu, mean=mean,
             input_scale=args.input_scale, raw_scale=args.raw_scale,
             channel_swap=channel_swap)
-
+    print "Caffe model loaded in ", time.time()-start
     if args.gpu:
         print 'GPU mode'
 
@@ -128,7 +129,7 @@ def InputImagePredictAux(args):
     predictions = classifier.predict(inputs,False)
     for i in range(predictions.shape[0]):
 	predictions[i:]=(predictions[i:]>0.5).astype(int)
-    print "Done in %.2f s." % (time.time() - start)
+    print "Prediction done in %.2f s." % (time.time() - start)
     # Save
     np.save(args.output_file, predictions)
     #return

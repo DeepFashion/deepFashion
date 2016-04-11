@@ -12,4 +12,4 @@ max_iter: 10000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 500
-snapshot_prefix: "/data/deepfashion/color_label_multilabel/snapshot/color_label_multilabel_final_8"
+snapshot_prefix: "/data/deepfashion/color_label_multilabel/snapshot/color_label_multilabel_final_9"

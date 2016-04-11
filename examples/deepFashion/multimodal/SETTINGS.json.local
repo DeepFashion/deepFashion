@@ -1,0 +1,19 @@
+{
+    "DATASET_ROOT": "/data/deepfashion/multimodal/", 
+    "DBNAME_TEST": "/data/deepfashion/multimodal/multimodal_test", 
+    "DBNAME_TRAIN": "/data/deepfashion/multimodal/multimodal_TRAIN", 
+    "DBTYPE": "leveldb", 
+    "FEATURE_LEN": 48, 
+    "MODEL_DEF_FILE": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/deepFashion_48_deploy.prototxt", 
+    "MODEL_FILE": "/data/deepfashion/multimodal/snapshot/multimodal_iter_50000.caffemodel", 
+    "RESIZE": 256, 
+    "RESULT_FOLDER": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/analysis", 
+    "SNAPSHOT_LOC": "/data/deepfashion/multimodal/snapshot/multimodal", 
+    "TEST_FILE": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/test.txt", 
+    "TEST_FILE_DATA": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/test.txt.data", 
+    "TEST_FILE_LABEL": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/test.txt.labels", 
+    "TOP_K": 30, 
+    "TRAIN_FILE": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/train.txt", 
+    "TRAIN_FILE_DATA": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/train.txt.data", 
+    "TRAIN_FILE_LABEL": "/home/siddhantmanocha/Projects/neural/deepFashion/examples/deepFashion/multimodal/train.txt.labels"
+}

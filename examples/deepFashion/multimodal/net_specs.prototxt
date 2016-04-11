@@ -1,0 +1,566 @@
+name: "deepFashion"
+layers {
+  name: "data"
+  type: DATA 
+  top: "data"
+  top: "random"
+  data_param 
+  {
+    source: "/data/deepfashion/multimodal/multimodal_TRAIN"
+    batch_size: 32
+    backend: LMDB
+  }
+  transform_param 
+  {
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+    mirror: true
+  }
+  include: { phase: TRAIN }
+}
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param
+  {
+    source: "/data/deepfashion/multimodal/multimodal_TRAIN_ALT"
+    batch_size: 32
+    backend: LMDB
+  }
+  include: { phase: TRAIN }
+}
+
+
+layers {
+  name: "data"
+  type: DATA
+  top: "data"
+  top: "random"
+  data_param {
+    source: "/data/deepfashion/multimodal/multimodal_test"
+    batch_size: 32
+    backend: LMDB
+  }
+  transform_param {
+    crop_size: 227
+    mean_file: "../../../data/ilsvrc12/imagenet_mean.binaryproto"
+    mirror: true
+  }
+  include: { phase: TEST }
+}
+
+layers {
+  name: "labels"
+  type: DATA
+  top: "labels"
+  data_param
+  {
+    source: "/data/deepfashion/multimodal/multimodal_test_alt"
+    batch_size: 32
+    backend: LMDB
+  } 
+  include: { phase: TEST }
+} 
+
+layers
+{ 
+  name: "sliceL"
+  type: SLICE
+  bottom: "labels"
+  top: "labels0"
+  top: "labels1"
+  top: "labels2"
+  top: "labels3"
+  slice_param
+  { 
+    slice_point: 1
+    slice_point: 2
+    slice_point: 3
+  }
+}
+
+
+
+layers {
+  name: "conv1"
+  type: CONVOLUTION
+  bottom: "data"
+  top: "conv1"
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "relu1"
+  type: RELU
+  bottom: "conv1"
+  top: "conv1"
+}
+layers {
+  name: "pool1"
+  type: POOLING
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  name: "norm1"
+  type: LRN
+  bottom: "pool1"
+  top: "norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  name: "conv2"
+  type: CONVOLUTION
+  bottom: "norm1"
+  top: "conv2"
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu2"
+  type: RELU
+  bottom: "conv2"
+  top: "conv2"
+}
+layers {
+  name: "pool2"
+  type: POOLING
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  name: "norm2"
+  type: LRN
+  bottom: "pool2"
+  top: "norm2"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  name: "conv3"
+  type: CONVOLUTION
+  bottom: "norm2"
+  top: "conv3"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "relu3"
+  type: RELU
+  bottom: "conv3"
+  top: "conv3"
+}
+layers {
+  name: "conv4"
+  type: CONVOLUTION
+  bottom: "conv3"
+  top: "conv4"
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu4"
+  type: RELU
+  bottom: "conv4"
+  top: "conv4"
+}
+layers {
+  name: "conv5"
+  type: CONVOLUTION
+  bottom: "conv4"
+  top: "conv5"
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu5"
+  type: RELU
+  bottom: "conv5"
+  top: "conv5"
+}
+layers {
+  name: "pool5"
+  type: POOLING
+  bottom: "conv5"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  name: "fc6"
+  type: INNER_PRODUCT
+  bottom: "pool5"
+  top: "fc6"
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu6"
+  type: RELU
+  bottom: "fc6"
+  top: "fc6"
+}
+layers {
+  name: "drop6"
+  type: DROPOUT
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  name: "fc7"
+  type: INNER_PRODUCT
+  bottom: "fc6"
+  top: "fc7"
+  # Note that blobs_lr can be set to 0 to disable any fine-tuning of this, and any other, layer
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu7"
+  type: RELU
+  bottom: "fc7"
+  top: "fc7"
+}
+layers {
+  name: "drop7"
+  type: DROPOUT
+  bottom: "fc7"
+  top: "fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  name: "fc8_deepfashion"
+  type: INNER_PRODUCT
+  bottom: "fc7"
+  top: "fc8_deepfashion"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 1 
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 48
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layers {
+  name: "fc8_deepfashion_encode"
+  type: SIGMOID
+  bottom: "fc8_deepfashion"
+  top: "fc8_deepfashion_encode"
+}
+
+
+layers {
+  name: "fc8_pascal_label_mod"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_label_mod"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layers {
+  name: "fc8_pascal_color_mod"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_color_mod"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 1
+  blobs_lr: 2 
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 16
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layers {
+  name: "fc8_pascal_fabric_mod"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_fabric_mod"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 21
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    } 
+    bias_filler {
+      type: "constant"
+      value: 0
+    } 
+  } 
+} 
+
+
+layers {
+  name: "fc8_pascal_style_mod"
+  type: INNER_PRODUCT
+  bottom: "fc8_deepfashion_encode"
+  top: "fc8_pascal_style_mod"
+  # blobs_lr is set to higher than for other layers, because this layer is starting from random while the others are already trained
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 8
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    } 
+    bias_filler {
+      type: "constant"
+      value: 0
+    } 
+  } 
+} 
+
+layers {
+  name: "loss"
+  type: SOFTMAX_LOSS
+  bottom: "fc8_pascal_label_mod"
+  bottom: "labels0"
+}
+
+layers {
+  name: "loss"
+  type: SOFTMAX_LOSS
+  bottom: "fc8_pascal_color_mod"
+  bottom: "labels1"
+}
+
+layers {
+  name: "loss"
+  type: SOFTMAX_LOSS
+  bottom: "fc8_pascal_fabric_mod"
+  bottom: "labels2"
+}
+
+
+
+layers {
+  name: "loss"
+  type: SOFTMAX_LOSS
+  bottom: "fc8_pascal_style_mod"
+  bottom: "labels3"
+}
+
+
+ 
+
+layers {
+  name: "accuracy0"
+  type: ACCURACY
+  bottom: "fc8_pascal_label_mod"
+  bottom: "labels0"
+  top: "labelAccuracy"
+  include: { phase: TEST }
+} 
+
+
+layers {
+  name: "accuracy1"
+  type: ACCURACY
+  bottom: "fc8_pascal_color_mod"
+  bottom: "labels1"
+  top: "colorAccuracy"
+  include: { phase: TEST }
+}
+
+
+
+layers {
+  name: "accuracy2"
+  type: ACCURACY
+  bottom: "fc8_pascal_fabric_mod"
+  bottom: "labels2"
+  top: "fabricAccuracy"
+  include: { phase: TEST }
+}
+
+
+layers {
+  name: "accuracy3"
+  type: ACCURACY
+  bottom: "fc8_pascal_style_mod"
+  bottom: "labels3"
+  top: "styleAccuracy"
+  include: { phase: TEST }
+}
+
+
+
+layers {
+  name: "silence"
+  type: SILENCE
+  bottom: "random"
+}
+
