@@ -181,8 +181,8 @@ def InputImagePredict(input_file,settings_file,mode,classifier):
 			print np.sum(fabric)
 			print np.sum(style)
 			assert(len(label)==10 and len(color)==16 and len(fabric)==21 and len(style)==8)
-			result.append((np.argmax(label),np.argmax(color),np.argmax(fabric),np.argmax(style)))
-		return result
+			result.append([np.argmax(label),np.argmax(color),np.argmax(fabric),np.argmax(style)])
+		return result[0]
 
 if __name__ == '__main__':
 	print InputImagePredictAux(parseArgs())

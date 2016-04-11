@@ -51,7 +51,10 @@ def computeNN(imageURL):
         result[i]=result[i][8:]
         result[i]=result[i].replace("_", "/")
         result[i]=result[i].replace("catalog/s", "catalog_s")
-    return result
+    resList=list()
+    for val in result:
+        resList.append({'imageURL':val,'productURL':'https://www.youtube.com/watch?v=IFUjwj_RB5o&nohtml5=False'})
+    return {'imageURL':imageURL,result:resList}
 
 
 def computeTags(imageURL):
@@ -61,7 +64,7 @@ def computeTags(imageURL):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
     tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifier)
-    return tags
+    return {'imageURL':imageURL,result:tags}
 
 def on_request(msg):
     imageURL = str(msg.body)
