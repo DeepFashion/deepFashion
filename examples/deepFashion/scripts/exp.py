@@ -61,15 +61,6 @@ def computeTags(imageURL):
     tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifier)
     return tags
 
-
-def fib(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        return fib(n-1) + fib(n-2)
-
 def on_request(msg):
     imageURL = msg.body
     result=computeNN(imageURL)
