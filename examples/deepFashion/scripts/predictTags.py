@@ -128,7 +128,7 @@ def InputImagePredictAux(args):
 
     
     
-def InputImagePredict(input_file,settings_file):
+def InputImagePredict(input_file,settings_file,mode):
     defaultData={
     'center_only':False, 'channel_swap':'2,1,0', 'ext':'jpg', 'gpu':False, 
     'images_dim':'256,256','input_scale':None, 
@@ -148,13 +148,28 @@ def InputImagePredict(input_file,settings_file):
     # Classify.
     start = time.time()
     predictions = classifier.predict(inputs,False)
-    for i in range(predictions.shape[0]):
-        predictions[i:]=(predictions[i:]>0.5).astype(int)
-    print "Prediction done in %.2f s." % (time.time() - start)
-    # Save
-    np.save(args.output_file, predictions)
-    #return
-    return predictions
+    if mode=="embedding":	
+   	 for i in range(predictions.shape[0]):
+       		 predictions[i:]=(predictions[i:]>0.5).astype(int)
+   	 print "Prediction done in %.2f s." % (time.time() - start)
+   	 # Save
+   	 np.save(defaultData['output_file'], predictions)
+   	 #return
+   	 return predictions
+    elif mode=="tags":
+	predictions=predictions[0]
+	print sum(predictions)
+	label=predictions[:10]
+	color=predictions[10:26]
+	fabric=predictions[26:47]
+	style=predictions[47:55]
+	print np.sum(label)
+	print np.sum(color)
+	print np.sum(fabric)
+	print np.sum(style)
+	assert(len(label)==10 and len(color)==16 and len(fabric)==21 and len(style)==8)
+	return (np.argmax(label),np.argmax(color),np.argmax(fabric),np.argmax(style))
+#	return (1,1,1,1)
 
 
 

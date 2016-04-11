@@ -10,4 +10,4 @@ max_iter: 2000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 2000
-snapshot_prefix: "/data/deepfashion/multimodal/snapshot/multimodal_4tags"
+snapshot_prefix: "/data/deepfashion/multimodal/snapshot/multimodalNew_4tags"

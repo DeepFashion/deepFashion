@@ -223,6 +223,13 @@ layers {
   }
 }
 
+layers {
+  name: "softmax"
+  type: SOFTMAX
+  bottom: "fc8_pascal_label_mod"
+  top: "fc8_pascal_label_prob"
+}
+
 
 
 layers {
@@ -236,6 +243,14 @@ layers {
 }
 
 layers {
+  name: "softmax"
+  type: SOFTMAX
+  bottom: "fc8_pascal_color_mod"
+  top: "fc8_pascal_color_prob"
+}
+
+
+layers {
   name: "fc8_pascal_fabric_mod"
   type: INNER_PRODUCT
   bottom: "fc8_deepfashion_encode"
@@ -243,6 +258,13 @@ layers {
   inner_product_param {
     num_output: 21
   }
+}
+
+layers {
+  name: "softmax"
+  type: SOFTMAX
+  bottom: "fc8_pascal_fabric_mod"
+  top: "fc8_pascal_fabric_prob"
 }
 
 layers {
@@ -255,17 +277,21 @@ layers {
   }
 }
 
+layers {
+  name: "softmax"
+  type: SOFTMAX
+  bottom: "fc8_pascal_style_mod"
+  top: "fc8_pascal_style_prob"
+}
 
 layers {
   name: "concat"
-  bottom: "fc8_pascal_label_mod"
-  bottom: "fc8_pascal_color_mod"
-  bottom: "fc8_pascal_fabric_mod"
-  bottom: "fc8_pascal_style_mod"
+  bottom: "fc8_pascal_label_prob"
+  bottom: "fc8_pascal_color_prob"
+  bottom: "fc8_pascal_fabric_prob"
+  bottom: "fc8_pascal_style_prob"
   top: "out"
-  type: CONCAT 
-  concat_param {
-    axis: 1
-  }
+  type: CONCAT
 }
+
 

@@ -10,6 +10,6 @@ def make(f1,f2):
 		wf.write(val+'\n')
 	wf.close()
 
-make('train.txt','train_1.txt')
-make('test.txt','test_1.txt')
+make('trainNew.txt','trainNew_1.txt')
+make('testNew.txt','testNew_1.txt')
 
