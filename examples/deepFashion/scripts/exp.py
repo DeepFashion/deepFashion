@@ -20,6 +20,13 @@ from haigha.message import Message
 SETTINGS_FILE_EMBEDDING='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/SETTINGS.json'
 SETTINGS_FILE_TAGS='/home/ubuntu/caffe-cvprw15/examples/deepFashion/multimodal/SETTINGS.json'
 
+def githash(data):
+    s = sha1()
+    s.update("blob %u\0" % len(data))
+    s.update(data)
+    return s.hexdigest()
+
+
 
 try:
     classifier = predict.CreateClassifier(SETTINGS_FILE_TAGS)
