@@ -55,7 +55,7 @@ python/caffe/proto/
 *leveldb
 *lmdb
 examples/cvprw15-cifar10/dataset/*
-
+examples/deepFashion/tmp/*
 # LevelDB files
 *.sst
 *.ldb
