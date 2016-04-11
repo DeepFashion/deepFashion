@@ -136,7 +136,6 @@ def CreateClassifier(settings_file):
 
 def PreprocessInput(args):
 	# Load numpy array (.npy), directory glob (*.jpg), or image file.
-	args=
 	args.input_file = os.path.expanduser(args.input_file)
 	if args.input_file.endswith('npy'):
 		inputs = np.load(args.input_file)

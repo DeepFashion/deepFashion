@@ -1,11 +1,11 @@
 from threading import Lock
-clientLock=Lock()
 import predictTags as predict
 class caffeThreadManager:
 	def __init__(self,numThreads,settings_file):
 		self.threadPool = []
 		self.settings_file=settings_file
 		self.createPool(numThreads)
+		self.clientLock=Lock()
 
 	def _create_caffe_client(self):
 		try:
@@ -17,7 +17,7 @@ class caffeThreadManager:
 			return None
 
 	def createPool(self,numThreads):
-		with clientLock:
+		with self.clientLock:
 			for i in range(numThreads):
 				c = self._create_caffe_client()
 				if c:
@@ -26,7 +26,7 @@ class caffeThreadManager:
 					return False
 
 	def getThread(self):
-		with clientLock:
+		with self.clientLock:
 			if self.threadPool:
 				c = self.threadPool[-1]
 				self.threadPool.pop()
@@ -35,5 +35,5 @@ class caffeThreadManager:
 				return self._create_caffe_client()
 
 	def returnThread(self,c):
-		with clientLock:
+		with self.clientLock:
 			self.threadPool.append(c)
