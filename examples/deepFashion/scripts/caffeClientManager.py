@@ -10,6 +10,7 @@ class caffeThreadManager:
 	def _create_caffe_client(self):
 		try:
 			c = predict.CreateClassifier(self.settings_file)
+			print "Creating caffe client"
 			return c
 		except:
 			print 'Some error'
