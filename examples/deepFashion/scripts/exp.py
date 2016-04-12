@@ -21,12 +21,9 @@ SETTINGS_FILE_EMBEDDING='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_j
 SETTINGS_FILE_TAGS='/home/ubuntu/caffe-cvprw15/examples/deepFashion/multimodal/SETTINGS.json'
 
 
-try:
-    classifier = predict.CreateClassifier(SETTINGS_FILE_TAGS)
-    print "Creating caffe client"
-except:
-    print 'Some error'
-    assert(False)
+classifierTags = predict.CreateClassifier(SETTINGS_FILE_TAGS)
+classifierNN = predict.CreateClassifier(SETTINGS_FILE_EMBEDDING)
+print "Creating caffe client"
 
 connection = Connection(
     user='vastrai', password='vastra1',
@@ -44,7 +41,7 @@ def computeNN(imageURL):
     if os.path.isfile(filename):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
-    embedding=predict.InputImagePredict(filename,SETTINGS_FILE_EMBEDDING,"embedding",classifier)
+    embedding=predict.InputImagePredict(filename,SETTINGS_FILE_EMBEDDING,"embedding",classifierNN)
     result=getNear.computeNN(SETTINGS_FILE_EMBEDDING, embedding)
     for i in range(len(result)):
         result[i]=result[i].strip()
@@ -63,12 +60,17 @@ def computeTags(imageURL):
     if os.path.isfile(filename):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
-    tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifier)
+    tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifierTags)
     return {'imageURL':imageURL,'result':tags}
 
 def on_request(msg):
-    imageURL = str(msg.body)
-    result=computeTags(imageURL)
+    val = json.loads(str(msg.body))
+    print val
+    imageURL=val['url']
+    if val['type']=="similar":
+	result=computeNN(imageURL)
+    else:
+	result=computeTags(imageURL)
     print result
     reply_to = msg.properties["reply_to"]
     correlation_id = msg.properties["correlation_id"]
