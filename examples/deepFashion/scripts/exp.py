@@ -17,9 +17,20 @@ import time
 from haigha.connection import Connection
 from haigha.message import Message
 
+# from dbFns import main as db
+from dbFns import reddis as redisDb
+
 SETTINGS_FILE_EMBEDDING='/home/ubuntu/caffe-cvprw15/examples/deepFashion/label_jabong/SETTINGS.json'
 SETTINGS_FILE_TAGS='/home/ubuntu/caffe-cvprw15/examples/deepFashion/multimodal/SETTINGS.json'
 
+def githash(filename):
+    with open(filename,'r') as f:
+        data=f.readlines()
+    data="".join(data)
+    s = sha1()
+    s.update("blob %u\0" % len(data))
+    s.update(data)
+    return s.hexdigest()
 
 classifierTags = predict.CreateClassifier(SETTINGS_FILE_TAGS)
 classifierNN = predict.CreateClassifier(SETTINGS_FILE_EMBEDDING)
@@ -41,7 +52,15 @@ def computeNN(imageURL):
     if os.path.isfile(filename):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
+    
+    imageHash=githash(filename)
+    
+    dbRes=redisDb.fetchKey(imageHash+"_similar")
+    if dbRes:
+        return {'imageURL':imageURL,'result': dbRes}
+
     embedding=predict.InputImagePredict(filename,SETTINGS_FILE_EMBEDDING,"embedding",classifierNN)
+    
     result=getNear.computeNN(SETTINGS_FILE_EMBEDDING, embedding)
     for i in range(len(result)):
         result[i]=result[i].strip()
@@ -51,6 +70,9 @@ def computeNN(imageURL):
     resList=list()
     for val in result:
         resList.append({'imageURL':val,'productURL':'https://www.youtube.com/watch?v=IFUjwj_RB5o&nohtml5=False'})
+    
+    # db.InsertData({'imageName':imageHash,'similarProducts':resList,'crossProducts':[],'tags':[]},mode="similar")
+    redisDb.insertKey(imageHash+"_similar",resList)
     return {'imageURL':imageURL,'result':resList}
 
 
@@ -60,7 +82,22 @@ def computeTags(imageURL):
     if os.path.isfile(filename):
         os.remove(filename) 
     urllib.urlretrieve(imageURL, filename)
+
+    imageHash=githash(filename)
+
+    dbRes=redisDb.fetchKey(imageHash+"_tags")
+    if dbRes:
+        return {'imageURL':imageURL,'result': dbRes}
+    # dbRes=db.getData(imageHash,"tags")
+    # if dbRes:
+    #     return {'imageURL':imageURL,'result': dbRes['tags']}
+
+
     tags=predict.InputImagePredict(filename,SETTINGS_FILE_TAGS,"tags",classifierTags)
+
+    redisDb.insertKey(imageHash+"_tags",tags)
+    # db.InsertData({'imageName':imageHash,'similarProducts':[],'crossProducts':[],'tags':tags},mode="tags")
+    
     return {'imageURL':imageURL,'result':tags}
 
 def on_request(msg):
